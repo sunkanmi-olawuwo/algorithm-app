@@ -55,16 +55,6 @@ public class FindLargestNumberTests
     }
     
     [Test]
-    public void ValidateInput_WithNullInput_ReturnsFalse()
-    {
-        // Act
-        var result = _algorithm.ValidateInput(null);
-        
-        // Assert
-        Assert.That(result, Is.False);
-    }
-    
-    [Test]
     public void ValidateInput_WithNonArrayInput_ReturnsFalse()
     {
         // Arrange

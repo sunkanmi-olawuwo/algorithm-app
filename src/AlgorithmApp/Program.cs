@@ -31,6 +31,7 @@ public class Program
 
                 // Register all algorithms
                 services.AddSingleton<IAlgorithm, FindLargestNumber>();
+                services.AddSingleton<IAlgorithm, ContainsDuplicate>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();

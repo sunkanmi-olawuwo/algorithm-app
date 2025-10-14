@@ -76,7 +76,7 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
     {
         Console.WriteLine($"\n=== {result.AlgorithmName} Results ===");
 
-        if (result.Steps.Count > 0 && result.Steps.Count <= 20)
+        if (result.Steps.Count is > 0 and <= 20)
         {
             Console.WriteLine("\nExecution Steps:");
             foreach (var step in result.Steps)
@@ -91,7 +91,23 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
             foreach (var step in result.Steps.TakeLast(5))
                 Console.WriteLine($"  {step}");
         }
-        
+
+        // Display output
+        Console.WriteLine("\nOutput:");
+        if (result.Output != null)
+        {
+            var outputProps = result.Output.GetType().GetProperties();
+            foreach (var prop in outputProps)
+            {
+                var value = prop.GetValue(result.Output);
+                Console.WriteLine($"  {prop.Name}: {value}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("  (No output)");
+        }
+
         // Display performance metrics if available
         if (result.PerformanceMetrics != null)
         {
