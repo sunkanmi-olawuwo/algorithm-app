@@ -6,7 +6,7 @@ namespace AlgorithmApp.Tests.Algorithms.Array;
 [TestFixture]
 public class ValidAnagramArrayTests
 {
-    private ValidAnagramArray _algorithm;
+    private ValidAnagramArray _algorithm = null!;
     
     [SetUp]
     public void Setup()
@@ -18,7 +18,14 @@ public class ValidAnagramArrayTests
     public void Name_ReturnsCorrectValue()
     {
         // Assert
-        Assert.That(_algorithm.Name, Is.EqualTo("Valid Anagram (Dictionary)"));
+        Assert.That(_algorithm.Name, Is.EqualTo("Valid Anagram (Array)"));
+    }
+    
+    [Test]
+    public void Description_ReturnsCorrectValue()
+    {
+        // Assert
+        Assert.That(_algorithm.Description, Does.Contain("array"));
     }
     
     [Test]
@@ -59,7 +66,7 @@ public class ValidAnagramArrayTests
     public void ValidateInput_WithNullFirstString_ReturnsFalse()
     {
         // Arrange
-        var input = Tuple.Create((string)null, "test");
+        var input = Tuple.Create((string?)null, "test");
         
         // Act
         var result = _algorithm.ValidateInput(input);
@@ -85,7 +92,7 @@ public class ValidAnagramArrayTests
     public void ValidateInput_WithNullSecondString_ReturnsFalse()
     {
         // Arrange
-        var input = Tuple.Create("test", (string)null);
+        var input = Tuple.Create("test", (string?)null);
         
         // Act
         var result = _algorithm.ValidateInput(input);
@@ -130,10 +137,13 @@ public class ValidAnagramArrayTests
         var result = _algorithm.GenerateSampleInput(size);
         
         // Assert
-        Assert.That(result, Is.TypeOf<Tuple<string, string>>());
-        var tuple = (Tuple<string, string>)result;
-        Assert.That(tuple.Item1.Length, Is.EqualTo(size));
-        Assert.That(tuple.Item2.Length, Is.EqualTo(size));
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Is.TypeOf<Tuple<string, string>>());
+            var tuple = (Tuple<string, string>)result;
+            Assert.That(tuple.Item1.Length, Is.EqualTo(size));
+            Assert.That(tuple.Item2.Length, Is.EqualTo(size));
+        });
     }
 
     [Test]
@@ -147,9 +157,12 @@ public class ValidAnagramArrayTests
         var isAnagram = GetOutputValue(result);
         
         // Assert
-        Assert.That(isAnagram, Is.True);
-        Assert.That(result.Steps, Is.Not.Empty);
-        Assert.That(result.AlgorithmName, Is.EqualTo(_algorithm.Name));
+        Assert.Multiple(() =>
+        {
+            Assert.That(isAnagram, Is.True);
+            Assert.That(result.Steps, Is.Not.Empty);
+            Assert.That(result.AlgorithmName, Is.EqualTo(_algorithm.Name));
+        });
     }
 
     [Test]
@@ -163,8 +176,11 @@ public class ValidAnagramArrayTests
         var isAnagram = GetOutputValue(result);
         
         // Assert
-        Assert.That(isAnagram, Is.False);
-        Assert.That(result.Steps, Is.Not.Empty);
+        Assert.Multiple(() =>
+        {
+            Assert.That(isAnagram, Is.False);
+            Assert.That(result.Steps, Is.Not.Empty);
+        });
     }
 
     [Test]
@@ -178,8 +194,11 @@ public class ValidAnagramArrayTests
         var isAnagram = GetOutputValue(result);
         
         // Assert
-        Assert.That(isAnagram, Is.False);
-        Assert.That(result.Steps, Contains.Item("Lengths differ. Returning false."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(isAnagram, Is.False);
+            Assert.That(result.Steps, Contains.Item("Lengths differ. Returning false."));
+        });
     }
 
     [Test]
@@ -282,13 +301,16 @@ public class ValidAnagramArrayTests
         var result = _algorithm.ExecuteAsync(input);
         
         // Assert
-        Assert.That(result.AlgorithmName, Is.Not.Null.And.Not.Empty);
-        Assert.That(result.Input, Is.Not.Null);
-        Assert.That(result.Output, Is.Not.Null);
-        Assert.That(result.Steps, Is.Not.Null.And.Not.Empty);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.AlgorithmName, Is.Not.Null.And.Not.Empty);
+            Assert.That(result.Input, Is.Not.Null);
+            Assert.That(result.Output, Is.Not.Null);
+            Assert.That(result.Steps, Is.Not.Null.And.Not.Empty);
+        });
     }
 
-    private bool GetOutputValue(AlgorithmResult result)
+    private static bool GetOutputValue(AlgorithmResult result)
     {
         var outputProps = result.Output?.GetType().GetProperties();
         var valueProp = outputProps?.FirstOrDefault(p => p.Name == "IsAnagram");

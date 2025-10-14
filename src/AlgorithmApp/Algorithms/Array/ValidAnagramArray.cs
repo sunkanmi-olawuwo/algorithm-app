@@ -4,16 +4,18 @@ namespace AlgorithmApp.Algorithms.Array;
 
 public class ValidAnagramArray : ArrayAlgorithmBase
 {
-    public override string Name => "Valid Anagram (Dictionary)";
-    public override string Description => "Determines if two strings are anagrams using a dictionary to count character occurrences.";
+    public override string Name => "Valid Anagram (Array)";
+    public override string Description => "Determines if two strings are anagrams using an array to count character occurrences.";
     public override string TimeComplexity => "O(n)";
     public override string SpaceComplexity => "O(1)";
+    
     public override bool ValidateInput(object input)
     {
         return input is Tuple<string, string> tuple &&
                !string.IsNullOrEmpty(tuple.Item1) &&
                !string.IsNullOrEmpty(tuple.Item2);
     }
+    
     public override object GenerateSampleInput(int size)
     {
         var random = new Random();
@@ -28,6 +30,7 @@ public class ValidAnagramArray : ArrayAlgorithmBase
     {
         if (!ValidateInput(input))
             throw new ArgumentException("Invalid input. Expected a tuple of two non-empty strings.");
+        
         var (s, t) = (Tuple<string, string>)input;
         var steps = new List<string>
         {
@@ -49,9 +52,9 @@ public class ValidAnagramArray : ArrayAlgorithmBase
         }
 
         var count = new int[26];
-        //convert the characters to lowercase
-        s = s.ToLowerInvariant();
-        t = t.ToLowerInvariant();
+        steps.Add("Using an array of size 26 to count character occurrences (a-z).");
+        steps.Add("Converting characters to lowercase and updating counts.");
+        
         for (int i = 0; i < s.Length; i++)
         {
             count[char.ToLowerInvariant(s[i]) - 'a']++;
@@ -61,6 +64,7 @@ public class ValidAnagramArray : ArrayAlgorithmBase
         steps.Add("Character counts updated for both strings.");
         bool isAnagram = count.All(c => c == 0);
         steps.Add(isAnagram ? "All counts are zero. Strings are anagrams." : "Counts differ. Strings are not anagrams.");
+        
         return new AppModels.AlgorithmResult
         {
             AlgorithmName = Name,
