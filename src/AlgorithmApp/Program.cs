@@ -30,7 +30,6 @@ public class Program
                 services.AddSingleton<IAlgorithmComparer, AlgorithmComparer>();
 
                 // Register all algorithms
-                services.AddSingleton<IAlgorithm, FindLargestNumber>();
                 services.AddSingleton<IAlgorithm, ContainsDuplicate>();
                 services.AddSingleton<IAlgorithm, ValidAnagramDictionary>();
                 services.AddSingleton<IAlgorithm, ValidAnagramArray>();
