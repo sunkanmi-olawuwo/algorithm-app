@@ -8,6 +8,7 @@ public class FindLargestNumber : ArrayAlgorithmBase
     public override string Description => "Finds the largest number in an array.";
     public override string TimeComplexity => "O(n)";
     public override string SpaceComplexity => "O(1)";
+    public override string Hint => "Iterate through the array, keeping track of the largest number found.";
 
     public override AlgorithmResult ExecuteAsync(object input)
     {

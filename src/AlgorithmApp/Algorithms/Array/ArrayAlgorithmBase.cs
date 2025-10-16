@@ -11,6 +11,7 @@ public abstract class ArrayAlgorithmBase : IAlgorithm
     public abstract string Description { get; }
     public abstract string TimeComplexity { get; }
     public abstract string SpaceComplexity { get; }
+    public abstract string Hint { get; }
 
     public virtual bool ValidateInput(object input)
     {

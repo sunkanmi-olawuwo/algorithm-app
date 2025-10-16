@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AlgorithmApp.Core;
+﻿using AlgorithmApp.Core;
 
 namespace AlgorithmApp.Algorithms.Array;
 
@@ -13,6 +8,8 @@ public class ValidAnagramDictionary : ArrayAlgorithmBase
     public override string Description => "Determines if two strings are anagrams using a dictionary to count character occurrences.";
     public override string TimeComplexity => "O(n)";
     public override string SpaceComplexity => "O(1)";
+    public override string Hint => "Use a dictionary to count character occurrences.";
+
     public override bool ValidateInput(object input)
     {
         return input is Tuple<string, string> tuple &&

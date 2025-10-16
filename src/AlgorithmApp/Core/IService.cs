@@ -11,6 +11,7 @@ public class IService
         string Description { get; }
         string TimeComplexity { get; }
         string SpaceComplexity { get; }
+        string Hint { get; }
         AlgorithmResult ExecuteAsync(object input);
         object GenerateSampleInput(int size);
         bool ValidateInput(object input);

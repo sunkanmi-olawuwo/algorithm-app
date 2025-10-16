@@ -9,6 +9,8 @@ public class ContainsDuplicate : ArrayAlgorithmBase
     public override string Description => "Checks if an array contains any duplicates.";
     public override string TimeComplexity => "O(n)";
     public override string SpaceComplexity => "O(n)";
+    public override string Hint => "Use a HashSet to track seen numbers. This will allow us check if an element is duplicate in constant time";
+
     public override AppModels.AlgorithmResult ExecuteAsync(object input)
     {
         if (!ValidateInput(input))

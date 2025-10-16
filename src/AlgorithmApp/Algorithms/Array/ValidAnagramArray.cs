@@ -8,7 +8,8 @@ public class ValidAnagramArray : ArrayAlgorithmBase
     public override string Description => "Determines if two strings are anagrams using an array to count character occurrences.";
     public override string TimeComplexity => "O(n)";
     public override string SpaceComplexity => "O(1)";
-    
+    public override string Hint => "Use an array of fixed size (26 for lowercase letters) to count character occurrences.";
+
     public override bool ValidateInput(object input)
     {
         return input is Tuple<string, string> tuple &&
