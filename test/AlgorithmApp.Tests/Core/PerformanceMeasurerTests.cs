@@ -9,11 +9,8 @@ public class PerformanceMeasurerTests
     private PerformanceMeasurer _measurer;
     
     [SetUp]
-    public void Setup()
-    {
-        _measurer = new PerformanceMeasurer();
-    }
-    
+    public void Setup() => _measurer = new PerformanceMeasurer();
+
     [Test]
     public void Measure_ExecutesTheAction()
     {
@@ -35,7 +32,7 @@ public class PerformanceMeasurerTests
         Action action = () => Thread.Sleep(10); // Small delay
         
         // Act
-        var result = _measurer.Measure(action);
+        AppModels.PerformanceMetrics? result = _measurer.Measure(action);
         
         // Assert
         Assert.That(result.ExecutionTime.TotalMilliseconds, Is.GreaterThan(0));
@@ -49,8 +46,8 @@ public class PerformanceMeasurerTests
         Action slowAction = () => Thread.Sleep(50);
         
         // Act
-        var fastResult = _measurer.Measure(fastAction);
-        var slowResult = _measurer.Measure(slowAction);
+        AppModels.PerformanceMetrics? fastResult = _measurer.Measure(fastAction);
+        AppModels.PerformanceMetrics? slowResult = _measurer.Measure(slowAction);
         
         // Assert - with some tolerance for system variability
         Assert.That(slowResult.ExecutionTime, Is.GreaterThan(fastResult.ExecutionTime));
@@ -62,13 +59,13 @@ public class PerformanceMeasurerTests
         // Arrange
         Action memoryIntensiveAction = () => {
             // Allocate a reasonably sized array to ensure some memory usage
-            var array = new byte[1024 * 1024]; // 1MB
+            byte[]? array = new byte[1024 * 1024]; // 1MB
             // Prevent optimization by doing something with the array
             array[0] = 1;
         };
         
         // Act
-        var result = _measurer.Measure(memoryIntensiveAction);
+        AppModels.PerformanceMetrics? result = _measurer.Measure(memoryIntensiveAction);
         
         // Assert
         // Note: Memory measurement can be imprecise due to garbage collection,

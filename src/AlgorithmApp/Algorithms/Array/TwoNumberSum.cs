@@ -1,0 +1,90 @@
+﻿using System.Linq;
+using static AlgorithmApp.Core.AppModels;
+
+namespace AlgorithmApp.Algorithms.Array;
+
+public class TwoNumberSum : ArrayAlgorithmBase
+{
+    public override string Name => "Two Number Sum";
+    public override string Description => "Given an array of integers nums and an integer target," +
+                                          "\n Return the indices i and j such that nums[i] + nums[j] == target and i != j" +
+                                          "\n You may assume that every input has exactly one pair of indices i and j that satisfy the condition." +
+                                          "\nReturn the answer with the smaller index first.";
+    public override string TimeComplexity => "O(n)";
+    public override string SpaceComplexity => "O(n)";
+    public override string Hint => "we can iterate through nums with index i. Let difference = target - nums[i] " +
+                                   "and check if difference exists in the hash map as we iterate through the array, " +
+                                   "else store the current element in the hashmap with its index and continue." +
+                                   " We use a hashmap for O(1) lookups";
+    public override object GenerateSampleInput(int size)
+    {
+        var random = new Random();
+        int[]? array = Enumerable.Range(0, size)
+            .Select(_ => random.Next(-1000, 1001))
+            .ToArray();
+        int targetSum = array[random.Next(size)] + array[random.Next(size)];
+        return Tuple.Create(array, targetSum);
+    }
+    public override bool ValidateInput(object input) =>
+        input is Tuple<int[], int> tuple &&
+        tuple.Item1.Length >= 2;
+
+    public override AlgorithmResult ExecuteAsync(object input)
+    {
+        if (!ValidateInput(input))
+        {
+            throw new ArgumentException("Invalid input. Expected a tuple of an integer array and a target sum.");
+        }
+
+        (int[]? array, int targetSum) = (Tuple<int[], int>)input;
+        var steps = new List<string>
+        {
+            $"Input array: [{string.Join(", ", array)}]",
+            $"Target sum: {targetSum}",
+            "Using a hash set to track seen numbers."
+        };
+
+        var dicStore = new Dictionary<int, int>();
+        int bestIdx1 = -1, bestIdx2 = -1;
+        for (int i = 0; i < array.Length; i++)
+        {
+            int diff = targetSum - array[i];
+            if (dicStore.TryGetValue(diff, out int firstIndex))
+            {
+                int idx1 = Math.Min(firstIndex, i);
+                int idx2 = Math.Max(firstIndex, i);
+                steps.Add($"Found candidate pair: nums[{idx1}] + nums[{idx2}] == {targetSum}");
+                // Choose the pair with the smallest first index (requirement inferred from tests)
+                if (bestIdx1 == -1 || idx1 < bestIdx1)
+                {
+                    bestIdx1 = idx1;
+                    bestIdx2 = idx2;
+                }
+            }
+            dicStore[array[i]] = i;
+        }
+
+        if (bestIdx1 != -1)
+        {
+            steps.Add($"Selected pair: nums[{bestIdx1}] + nums[{bestIdx2}] == {targetSum}");
+            int[,]? output = new int[2, 2];
+            output[0, 0] = bestIdx1;
+            output[0, 1] = bestIdx2;
+            return new AlgorithmResult
+            {
+                AlgorithmName = Name,
+                Input = input,
+                Output = output,
+                Steps = steps
+            };
+        }
+
+        return new AlgorithmResult
+        {
+            AlgorithmName = Name,
+            Input = input,
+            Output = System.Array.Empty<int>(),
+            Steps = steps
+        };
+    }
+}

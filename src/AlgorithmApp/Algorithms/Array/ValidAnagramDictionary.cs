@@ -10,27 +10,29 @@ public class ValidAnagramDictionary : ArrayAlgorithmBase
     public override string SpaceComplexity => "O(1)";
     public override string Hint => "Use a dictionary to count character occurrences.";
 
-    public override bool ValidateInput(object input)
-    {
-        return input is Tuple<string, string> tuple &&
-               !string.IsNullOrEmpty(tuple.Item1) &&
-               !string.IsNullOrEmpty(tuple.Item2);
-    }
+    public override bool ValidateInput(object input) =>
+        input is Tuple<string, string> tuple &&
+        !string.IsNullOrEmpty(tuple.Item1) &&
+        !string.IsNullOrEmpty(tuple.Item2);
+
     public override object GenerateSampleInput(int size)
     {
         var random = new Random();
         const string chars = "abcdefghijklmnopqrstuvwxyz";
-        var str1 = new string(Enumerable.Range(0, size)
+        string? str1 = new string(Enumerable.Range(0, size)
             .Select(_ => chars[random.Next(chars.Length)]).ToArray());
-        var str2 = new string(str1.ToCharArray().OrderBy(_ => random.Next()).ToArray());
+        string? str2 = new string(str1.ToCharArray().OrderBy(_ => random.Next()).ToArray());
         return Tuple.Create(str1, str2);
     }
 
     public override AppModels.AlgorithmResult ExecuteAsync(object input)
     {
         if (!ValidateInput(input))
+        {
             throw new ArgumentException("Invalid input. Expected a tuple of two non-empty strings.");
-        var (s, t) = (Tuple<string, string>)input;
+        }
+
+        (string? s, string? t) = (Tuple<string, string>)input;
         var steps = new List<string>
         {
             $"Input strings: s = \"{s}\", t = \"{t}\"",

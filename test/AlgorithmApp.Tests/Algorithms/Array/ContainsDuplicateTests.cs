@@ -1,3 +1,4 @@
+using System.Reflection;
 using AlgorithmApp.Algorithms.Array;
 using static AlgorithmApp.Core.AppModels;
 
@@ -9,33 +10,26 @@ public class ContainsDuplicateTests
     private ContainsDuplicate _algorithm;
     
     [SetUp]
-    public void Setup()
-    {
-        _algorithm = new ContainsDuplicate();
-    }
-    
+    public void Setup() => _algorithm = new ContainsDuplicate();
+
     [Test]
-    public void Name_ReturnsCorrectValue()
-    {
+    public void Name_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.Name, Is.EqualTo("Contains Duplicate"));
-    }
-    
+
     [Test]
-    public void Category_ReturnsCorrectValue()
-    {
+    public void Category_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.Category, Is.EqualTo("Array"));
-    }
-    
+
     [Test]
     public void ValidateInput_WithValidArray_ReturnsTrue()
     {
         // Arrange
-        var input = new[] { 1, 2, 3, 4, 5 };
+        int[]? input = new[] { 1, 2, 3, 4, 5 };
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.True);
@@ -45,10 +39,10 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithEmptyArray_ReturnsFalse()
     {
         // Arrange
-        var input = new int[0];
+        int[]? input = new int[0];
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -58,10 +52,10 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithNonArrayInput_ReturnsFalse()
     {
         // Arrange
-        var input = "not an array";
+        string? input = "not an array";
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -74,7 +68,7 @@ public class ContainsDuplicateTests
         int size = 10;
         
         // Act
-        var result = _algorithm.GenerateSampleInput(size);
+        object? result = _algorithm.GenerateSampleInput(size);
         
         // Assert
         Assert.That(result, Is.TypeOf<int[]>());
@@ -85,11 +79,11 @@ public class ContainsDuplicateTests
     public void ExecuteAsync_WithDuplicates_ReturnsTrue()
     {
         // Arrange
-        var input = new[] { 1, 2, 3, 4, 5, 3 };
+        int[]? input = new[] { 1, 2, 3, 4, 5, 3 };
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var containsDuplicate = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool containsDuplicate = GetOutputValue(result);
         // Assert
         Assert.That(containsDuplicate, Is.EqualTo(true));
     }
@@ -98,11 +92,11 @@ public class ContainsDuplicateTests
     public void ExecuteAsync_WithoutDuplicates_ReturnsFalse()
     {
         // Arrange
-        var input = new[] { 1, 2, 3, 4, 5 };
+        int[]? input = new[] { 1, 2, 3, 4, 5 };
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var containsDuplicate = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool containsDuplicate = GetOutputValue(result);
         // Assert
         Assert.That(containsDuplicate, Is.EqualTo(false));
     }
@@ -110,8 +104,8 @@ public class ContainsDuplicateTests
 
     private bool GetOutputValue(AlgorithmResult result)
     {
-        var outputProps = result.Output?.GetType().GetProperties();
-        var valueProp = outputProps?.FirstOrDefault(p => p.Name == "ContainsDuplicate");
+        PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
+        PropertyInfo? valueProp = outputProps?.FirstOrDefault(p => p.Name == "ContainsDuplicate");
         return (bool)(valueProp?.GetValue(result.Output) ?? false);
     }
 }

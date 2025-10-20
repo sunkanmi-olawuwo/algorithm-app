@@ -1,68 +1,72 @@
 using static AlgorithmApp.Core.AppModels;
 using static AlgorithmApp.Core.IService;
 
-namespace AlgorithmApp.Core
+namespace AlgorithmApp.Core;
+
+public interface IAlgorithmComparer
 {
-    public interface IAlgorithmComparer
+    ComparisonResult CompareAlgorithms(IEnumerable<string> algorithmNames, int inputSize);
+}
+
+public class AlgorithmComparer : IAlgorithmComparer
+{
+    private readonly IAlgorithmFactory _algorithmFactory;
+    private readonly IPerformanceMeasurer _performanceMeasurer;
+
+    public AlgorithmComparer(
+        IAlgorithmFactory algorithmFactory,
+        IPerformanceMeasurer performanceMeasurer)
     {
-        ComparisonResult CompareAlgorithms(IEnumerable<string> algorithmNames, int inputSize);
+        _algorithmFactory = algorithmFactory;
+        _performanceMeasurer = performanceMeasurer;
     }
 
-    public class AlgorithmComparer : IAlgorithmComparer
+    public ComparisonResult CompareAlgorithms(IEnumerable<string> algorithmNames, int inputSize)
     {
-        private readonly IAlgorithmFactory _algorithmFactory;
-        private readonly IPerformanceMeasurer _performanceMeasurer;
-
-        public AlgorithmComparer(
-            IAlgorithmFactory algorithmFactory,
-            IPerformanceMeasurer performanceMeasurer)
+        var results = new Dictionary<string, PerformanceMetrics>();
+            
+        foreach (string? name in algorithmNames)
         {
-            _algorithmFactory = algorithmFactory;
-            _performanceMeasurer = performanceMeasurer;
-        }
+            IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm(name);
+            if (algorithm == null)
+            {
+                continue;
+            }
 
-        public ComparisonResult CompareAlgorithms(IEnumerable<string> algorithmNames, int inputSize)
-        {
-            var results = new Dictionary<string, PerformanceMetrics>();
-            
-            foreach (var name in algorithmNames)
+            // Generate input
+            object? input = algorithm.GenerateSampleInput(inputSize);
+                
+            // Validate input
+            if (!algorithm.ValidateInput(input))
             {
-                var algorithm = _algorithmFactory.GetAlgorithm(name);
-                if (algorithm == null) continue;
-                
-                // Generate input
-                var input = algorithm.GenerateSampleInput(inputSize);
-                
-                // Validate input
-                if (!algorithm.ValidateInput(input))
-                    continue;
-                
-                // Measure performance
-                AlgorithmResult? result = null;
-                var metrics = _performanceMeasurer.Measure(() =>
-                {
-                    result = algorithm.ExecuteAsync(input);
-                });
-                
-                results[name] = metrics;
+                continue;
             }
-            
-            // Find fastest and most memory efficient algorithms
-            string fastest = "";
-            string mostMemoryEfficient = "";
-            
-            if (results.Any())
+
+            // Measure performance
+            AlgorithmResult? result = null;
+            PerformanceMetrics? metrics = _performanceMeasurer.Measure(() =>
             {
-                fastest = results.OrderBy(r => r.Value.ExecutionTime).First().Key;
-                mostMemoryEfficient = results.OrderBy(r => r.Value.MemoryUsed).First().Key;
-            }
-            
-            return new ComparisonResult(
-                FastestAlgorithm: fastest,
-                MostMemoryEfficient: mostMemoryEfficient)
-            {
-                Results = results
-            };
+                result = algorithm.ExecuteAsync(input);
+            });
+                
+            results[name] = metrics;
         }
+            
+        // Find fastest and most memory efficient algorithms
+        string fastest = "";
+        string mostMemoryEfficient = "";
+            
+        if (results.Any())
+        {
+            fastest = results.OrderBy(r => r.Value.ExecutionTime).First().Key;
+            mostMemoryEfficient = results.OrderBy(r => r.Value.MemoryUsed).First().Key;
+        }
+            
+        return new ComparisonResult(
+            FastestAlgorithm: fastest,
+            MostMemoryEfficient: mostMemoryEfficient)
+        {
+            Results = results
+        };
     }
 }

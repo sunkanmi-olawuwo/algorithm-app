@@ -33,6 +33,8 @@ public class Program
                 services.AddSingleton<IAlgorithm, ContainsDuplicate>();
                 services.AddSingleton<IAlgorithm, ValidAnagramDictionary>();
                 services.AddSingleton<IAlgorithm, ValidAnagramArray>();
+                services.AddSingleton<IAlgorithm, TwoNumberSum>();
+                services.AddSingleton<IAlgorithm, ArrayAlgorithmScratchPad>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();

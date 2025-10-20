@@ -13,10 +13,7 @@ public abstract class ArrayAlgorithmBase : IAlgorithm
     public abstract string SpaceComplexity { get; }
     public abstract string Hint { get; }
 
-    public virtual bool ValidateInput(object input)
-    {
-        return input is int[] array && array.Length > 0;
-    }
+    public virtual bool ValidateInput(object input) => input is int[] array && array.Length > 0;
 
     public virtual object GenerateSampleInput(int size)
     {

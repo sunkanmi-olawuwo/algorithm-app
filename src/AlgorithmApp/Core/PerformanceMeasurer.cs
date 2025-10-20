@@ -1,41 +1,40 @@
 using System.Diagnostics;
 using static AlgorithmApp.Core.AppModels;
 
-namespace AlgorithmApp.Core
-{
-    public interface IPerformanceMeasurer
-    {
-        PerformanceMetrics Measure(Action action);
-    }
+namespace AlgorithmApp.Core;
 
-    public class PerformanceMeasurer : IPerformanceMeasurer
+public interface IPerformanceMeasurer
+{
+    PerformanceMetrics Measure(Action action);
+}
+
+public class PerformanceMeasurer : IPerformanceMeasurer
+{
+    public PerformanceMetrics Measure(Action action)
     {
-        public PerformanceMetrics Measure(Action action)
-        {
-            // Record the starting memory
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
+        // Record the starting memory
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
             
-            long startMemory = GC.GetTotalMemory(true);
+        long startMemory = GC.GetTotalMemory(true);
             
-            // Start the timer
-            var stopwatch = Stopwatch.StartNew();
+        // Start the timer
+        var stopwatch = Stopwatch.StartNew();
             
-            // Execute the algorithm
-            action();
+        // Execute the algorithm
+        action();
             
-            // Stop the timer
-            stopwatch.Stop();
+        // Stop the timer
+        stopwatch.Stop();
             
-            // Get memory used
-            long endMemory = GC.GetTotalMemory(false);
-            long memoryUsed = endMemory - startMemory;
+        // Get memory used
+        long endMemory = GC.GetTotalMemory(false);
+        long memoryUsed = endMemory - startMemory;
             
-            return new PerformanceMetrics(
-                ExecutionTime: stopwatch.Elapsed, 
-                MemoryUsed: memoryUsed
-            );
-        }
+        return new PerformanceMetrics(
+            ExecutionTime: stopwatch.Elapsed, 
+            MemoryUsed: memoryUsed
+        );
     }
 }

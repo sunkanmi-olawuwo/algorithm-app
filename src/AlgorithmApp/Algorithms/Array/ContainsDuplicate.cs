@@ -14,9 +14,11 @@ public class ContainsDuplicate : ArrayAlgorithmBase
     public override AppModels.AlgorithmResult ExecuteAsync(object input)
     {
         if (!ValidateInput(input))
+        {
             throw new ArgumentException("Invalid input. Expected non-empty integer array.");
+        }
 
-        var array = (int[])input;
+        int[]? array = (int[])input;
         var steps = new List<string>
         {
             "A HashSet only keeps unique values — duplicates collapse into one entry.",

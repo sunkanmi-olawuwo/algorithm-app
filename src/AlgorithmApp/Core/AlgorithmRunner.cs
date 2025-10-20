@@ -13,8 +13,8 @@ public class AlgorithmRunner(
 {
     public void RunSelectedAlgorithm()
     {
-        var algorithmName = menuService.SelectAlgorithm();
-        var algorithm = algorithmFactory.GetAlgorithm(algorithmName);
+        string? algorithmName = menuService.SelectAlgorithm();
+        IAlgorithm? algorithm = algorithmFactory.GetAlgorithm(algorithmName);
 
         Console.WriteLine($"\n{algorithm.Name}");
         Console.WriteLine($"Description: {algorithm.Description}");
@@ -29,7 +29,7 @@ public class AlgorithmRunner(
                 Console.WriteLine("Invalid size. Using default size of 10.");
                 size = 10;
             }
-            var input = algorithm.GenerateSampleInput(size);
+            object? input = algorithm.GenerateSampleInput(size);
             if (!algorithm.ValidateInput(input))
             {
                 Console.WriteLine("Generated input is invalid for the selected algorithm.");
@@ -40,13 +40,17 @@ public class AlgorithmRunner(
             
             AlgorithmResult? result = null;
             
-            var metrics = performanceMeasurer.Measure(() => {
+            PerformanceMetrics? metrics = performanceMeasurer.Measure(() => {
                 result = algorithm.ExecuteAsync(input);
             });
             
             // Attach performance metrics to result
-            if (result == null) return;
-            var resultWithMetrics = result with { 
+            if (result == null)
+            {
+                return;
+            }
+
+            AlgorithmResult? resultWithMetrics = result with { 
                 PerformanceMetrics = metrics
             };
             

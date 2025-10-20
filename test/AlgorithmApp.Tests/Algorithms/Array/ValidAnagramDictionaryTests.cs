@@ -1,3 +1,4 @@
+using System.Reflection;
 using AlgorithmApp.Algorithms.Array;
 using static AlgorithmApp.Core.AppModels;
 
@@ -9,46 +10,33 @@ public class ValidAnagramDictionaryTests
     private ValidAnagramDictionary _algorithm = null!;
     
     [SetUp]
-    public void Setup()
-    {
-        _algorithm = new ValidAnagramDictionary();
-    }
-    
+    public void Setup() => _algorithm = new ValidAnagramDictionary();
+
     [Test]
-    public void Name_ReturnsCorrectValue()
-    {
+    public void Name_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.Name, Is.EqualTo("Valid Anagram (Dictionary)"));
-    }
-    
+
     [Test]
-    public void Description_ReturnsCorrectValue()
-    {
+    public void Description_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.Description, Does.Contain("dictionary"));
-    }
-    
+
     [Test]
-    public void Category_ReturnsCorrectValue()
-    {
+    public void Category_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.Category, Is.EqualTo("Array"));
-    }
-    
+
     [Test]
-    public void TimeComplexity_ReturnsCorrectValue()
-    {
+    public void TimeComplexity_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.TimeComplexity, Is.EqualTo("O(n)"));
-    }
-    
+
     [Test]
-    public void SpaceComplexity_ReturnsCorrectValue()
-    {
+    public void SpaceComplexity_ReturnsCorrectValue() =>
         // Assert
         Assert.That(_algorithm.SpaceComplexity, Is.EqualTo("O(1)"));
-    }
-    
+
     [Test]
     public void ValidateInput_WithValidTuple_ReturnsTrue()
     {
@@ -56,7 +44,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("anagram", "nagaram");
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.True);
@@ -69,7 +57,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create((string?)null, "test");
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -82,7 +70,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("", "test");
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -95,7 +83,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("test", (string?)null);
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -108,7 +96,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("test", "");
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -118,10 +106,10 @@ public class ValidAnagramDictionaryTests
     public void ValidateInput_WithNonTupleInput_ReturnsFalse()
     {
         // Arrange
-        var input = "not a tuple";
+        string? input = "not a tuple";
         
         // Act
-        var result = _algorithm.ValidateInput(input);
+        bool result = _algorithm.ValidateInput(input);
         
         // Assert
         Assert.That(result, Is.False);
@@ -134,7 +122,7 @@ public class ValidAnagramDictionaryTests
         int size = 10;
         
         // Act
-        var result = _algorithm.GenerateSampleInput(size);
+        object? result = _algorithm.GenerateSampleInput(size);
         
         // Assert
         Assert.Multiple(() =>
@@ -153,8 +141,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("anagram", "nagaram");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.Multiple(() =>
@@ -172,8 +160,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("rat", "car");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.Multiple(() =>
@@ -190,8 +178,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("a", "ab");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.Multiple(() =>
@@ -208,8 +196,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("a", "a");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.True);
@@ -222,8 +210,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("aabbcc", "abcabc");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.True);
@@ -236,8 +224,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("aab", "abb");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.False);
@@ -250,8 +238,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("Listen", "Silent");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         // Dictionary version is case-sensitive, so this should return false
@@ -265,8 +253,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("listen", "silent");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.True);
@@ -279,8 +267,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("a!b@c#", "#c@b!a");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.True);
@@ -293,8 +281,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("abc123", "321cba");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.True);
@@ -307,8 +295,8 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("café", "éfac");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
-        var isAnagram = GetOutputValue(result);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        bool isAnagram = GetOutputValue(result);
         
         // Assert
         Assert.That(isAnagram, Is.True);
@@ -318,7 +306,7 @@ public class ValidAnagramDictionaryTests
     public void ExecuteAsync_WithInvalidInput_ThrowsArgumentException()
     {
         // Arrange
-        var input = "invalid input";
+        string? input = "invalid input";
         
         // Act & Assert
         Assert.Throws<ArgumentException>(() => _algorithm.ExecuteAsync(input));
@@ -341,7 +329,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("test", "sett");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
         
         // Assert
         Assert.Multiple(() =>
@@ -360,7 +348,7 @@ public class ValidAnagramDictionaryTests
         var input = Tuple.Create("abc", "bca");
         
         // Act
-        var result = _algorithm.ExecuteAsync(input);
+        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
         
         // Assert
         Assert.Multiple(() =>
@@ -372,8 +360,8 @@ public class ValidAnagramDictionaryTests
 
     private static bool GetOutputValue(AlgorithmResult result)
     {
-        var outputProps = result.Output?.GetType().GetProperties();
-        var valueProp = outputProps?.FirstOrDefault(p => p.Name == "IsAnagram");
+        PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
+        PropertyInfo? valueProp = outputProps?.FirstOrDefault(p => p.Name == "IsAnagram");
         return (bool)(valueProp?.GetValue(result.Output) ?? false);
     }
 }
