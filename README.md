@@ -22,12 +22,6 @@ algorithms/
 
 ## Status Badges
 
-Add these badges to your README.md:
-
-```markdown
 [![CI](https://github.com/sunkanmi-olawuwo/algorithm-app/actions/workflows/ci.yml/badge.svg)](https://github.com/sunkanmi-olawuwo/algorithm-app/actions/workflows/ci.yml)
-```
-
----
 
 **Note**: This is an evolving learning resource. Regular updates and improvements are made as I progress through different algorithmic concepts.
