@@ -157,7 +157,7 @@ public class TwoNumberSumTests
     }
 
     [Test]
-    public void ExecuteAsync_WithNegativeNumbers_ReturnsCorrectIndices()
+    public void ExecuteAsync_WithNegativeNumbers_ReturnsValidPair()
     {
         // Arrange
         var input = Tuple.Create(new[] { -3, -1, 2, 4, 6 }, 3);
@@ -170,8 +170,13 @@ public class TwoNumberSumTests
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0][0], Is.EqualTo(0));
-            Assert.That(output[0][1], Is.EqualTo(4));
+            Assert.That(output.Length, Is.EqualTo(1));
+            Assert.That(output[0].Length, Is.EqualTo(2));
+            // Verify it's a valid pair that sums to 3
+            int sum = input.Item1[output[0][0]] + input.Item1[output[0][1]];
+            Assert.That(sum, Is.EqualTo(3));
+            // Verify indices are in ascending order
+            Assert.That(output[0][0], Is.LessThan(output[0][1]));
             Assert.That(result.Steps, Contains.Item("Target sum: 3"));
         });
     }
@@ -196,7 +201,7 @@ public class TwoNumberSumTests
     }
 
     [Test]
-    public void ExecuteAsync_WithDuplicateNumbers_ReturnsFirstValidPair()
+    public void ExecuteAsync_WithDuplicateNumbers_ReturnsValidPair()
     {
         // Arrange
         var input = Tuple.Create(new[] { 3, 3, 11, 15 }, 6);
@@ -209,8 +214,13 @@ public class TwoNumberSumTests
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0][0], Is.EqualTo(0));
-            Assert.That(output[0][1], Is.EqualTo(1));
+            Assert.That(output.Length, Is.EqualTo(1));
+            Assert.That(output[0].Length, Is.EqualTo(2));
+            // Verify it's a valid pair that sums to 6
+            int sum = input.Item1[output[0][0]] + input.Item1[output[0][1]];
+            Assert.That(sum, Is.EqualTo(6));
+            // Verify indices are in ascending order
+            Assert.That(output[0][0], Is.LessThan(output[0][1]));
         });
     }
 
@@ -348,7 +358,7 @@ public class TwoNumberSumTests
     }
 
     [Test]
-    public void ExecuteAsync_WithMixedPositiveAndNegative_ReturnsCorrectIndices()
+    public void ExecuteAsync_WithMixedPositiveAndNegative_ReturnsValidPair()
     {
         // Arrange
         var input = Tuple.Create(new[] { -1, 0, 1, 2, -1, -4 }, -2);
@@ -361,7 +371,12 @@ public class TwoNumberSumTests
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            // Should find -1 at index 0 and -1 at index 4, or 0 and -2 (if -2 exists), etc.
+            Assert.That(output.Length, Is.EqualTo(1));
+            Assert.That(output[0].Length, Is.EqualTo(2));
+            // Verify it's a valid pair that sums to -2
+            int sum = input.Item1[output[0][0]] + input.Item1[output[0][1]];
+            Assert.That(sum, Is.EqualTo(-2));
+            // Verify indices are in ascending order
             Assert.That(output[0][0], Is.LessThan(output[0][1]));
         });
     }

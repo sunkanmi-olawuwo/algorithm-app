@@ -41,11 +41,10 @@ internal class TwoNumberSum : ArrayAlgorithmBase
         [
             $"Input array: [{string.Join(", ", array)}]",
             $"Target sum: {targetSum}",
-            "Using a hash set to track seen numbers."
+            "Using a hash map to track seen numbers."
         ];
 
         var dicStore = new Dictionary<int, int>();
-        int bestIdx1 = -1, bestIdx2 = -1;
         for (int i = 0; i < array.Length; i++)
         {
             int diff = targetSum - array[i];
@@ -53,30 +52,20 @@ internal class TwoNumberSum : ArrayAlgorithmBase
             {
                 int idx1 = Math.Min(firstIndex, i);
                 int idx2 = Math.Max(firstIndex, i);
-                steps.Add($"Found candidate pair: nums[{idx1}] + nums[{idx2}] == {targetSum}");
-                // Choose the pair with the smallest first index (requirement inferred from tests)
-                if (bestIdx1 == -1 || idx1 < bestIdx1)
+                steps.Add($"Found pair: nums[{idx1}] + nums[{idx2}] == {targetSum}");
+                int[][] output = [[idx1, idx2]];
+                return new AlgorithmResult
                 {
-                    bestIdx1 = idx1;
-                    bestIdx2 = idx2;
-                }
+                    AlgorithmName = Name,
+                    Input = input,
+                    Output = output,
+                    Steps = steps
+                };
             }
             dicStore[array[i]] = i;
         }
 
-        if (bestIdx1 != -1)
-        {
-            steps.Add($"Selected pair: nums[{bestIdx1}] + nums[{bestIdx2}] == {targetSum}");
-            int[][] output = [[bestIdx1, bestIdx2]];
-            return new AlgorithmResult
-            {
-                AlgorithmName = Name,
-                Input = input,
-                Output = output,
-                Steps = steps
-            };
-        }
-
+        steps.Add("No valid pair found.");
         return new AlgorithmResult
         {
             AlgorithmName = Name,

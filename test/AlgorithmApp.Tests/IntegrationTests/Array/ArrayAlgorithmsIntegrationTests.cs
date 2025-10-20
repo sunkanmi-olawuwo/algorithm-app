@@ -318,12 +318,12 @@ public class ArrayAlgorithmsIntegrationTests
         {
             Assert.That(output[0][0], Is.EqualTo(0));
             Assert.That(output[0][1], Is.EqualTo(1));
-            Assert.That(result.Steps.Any(s => s.Contains("Selected pair")), Is.True);
+            Assert.That(result.Steps.Any(s => s.Contains("Found pair")), Is.True);
         });
     }
 
     [Test]
-    public void TwoNumberSum_WithNegativeNumbers_ReturnsCorrectIndices()
+    public void TwoNumberSum_WithNegativeNumbers_ReturnsValidPair()
     {
         // Arrange
         IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
@@ -336,8 +336,14 @@ public class ArrayAlgorithmsIntegrationTests
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(output[0][0], Is.EqualTo(0));
-            Assert.That(output[0][1], Is.EqualTo(4));
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Length, Is.EqualTo(1));
+            Assert.That(output[0].Length, Is.EqualTo(2));
+            // Verify it's a valid pair that sums to 3
+            int sum = input.Item1[output[0][0]] + input.Item1[output[0][1]];
+            Assert.That(sum, Is.EqualTo(3));
+            // Verify indices are in ascending order
+            Assert.That(output[0][0], Is.LessThan(output[0][1]));
         });
     }
 
