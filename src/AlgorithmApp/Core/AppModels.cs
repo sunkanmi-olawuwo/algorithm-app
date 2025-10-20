@@ -2,12 +2,6 @@
 
 namespace AlgorithmApp.Core;
 
-internal record ComplexityInfo(string Best = "", string Average = "", string Worst = "")
-{
-    public override string ToString() =>
-        $"Best: {Best}, Average: {Average}, Worst: {Worst}";
-}
-
 internal record AlgorithmResult(
     string AlgorithmName = "",
     object? Input = null,

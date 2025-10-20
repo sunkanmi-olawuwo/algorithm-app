@@ -18,7 +18,8 @@ public class ArrayAlgorithmsIntegrationTests
             new ContainsDuplicate(),
             new ValidAnagramArray(),
             new ValidAnagramDictionary(),
-            new TwoNumberSum()
+            new TwoNumberSum(),
+            new GroupAnagrams()
         };
 
         _algorithmFactory = new AlgorithmFactory(_algorithms);
@@ -300,6 +301,168 @@ public class ArrayAlgorithmsIntegrationTests
 
     #endregion
 
+    #region GroupAnagrams Integration Tests
+
+    [Test]
+    public void GroupAnagrams_WithMultipleGroups_ReturnsCorrectGroups()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Group Anagrams");
+        string[] input = ["eat", "tea", "tan", "ate", "nat", "bat"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        var output = (List<List<string>>)result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Count, Is.EqualTo(3));
+            Assert.That(result.Steps, Is.Not.Empty);
+            Assert.That(result.AlgorithmName, Is.EqualTo("Group Anagrams"));
+
+            // Verify one group contains "eat", "tea", "ate"
+            List<string>? eatGroup = output.FirstOrDefault(g => g.Contains("eat"));
+            Assert.That(eatGroup, Is.Not.Null);
+            Assert.That(eatGroup!.Count, Is.EqualTo(3));
+            
+            // Verify another group contains "tan", "nat"
+            List<string>? tanGroup = output.FirstOrDefault(g => g.Contains("tan"));
+            Assert.That(tanGroup, Is.Not.Null);
+            Assert.That(tanGroup!.Count, Is.EqualTo(2));
+            
+            // Verify bat is alone
+            List<string>? batGroup = output.FirstOrDefault(g => g.Contains("bat"));
+            Assert.That(batGroup, Is.Not.Null);
+            Assert.That(batGroup!.Count, Is.EqualTo(1));
+        });
+    }
+
+    [Test]
+    public void GroupAnagrams_WithSampleInput_GroupsCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Group Anagrams");
+        string[] input = ["listen", "silent", "enlist", "inlets", "google", "gogole"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        var output = (List<List<string>>)result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Count, Is.EqualTo(2));
+            
+            // Find the listen group
+            List<string>? listenGroup = output.FirstOrDefault(g => g.Contains("listen"));
+            Assert.That(listenGroup, Is.Not.Null);
+            Assert.That(listenGroup!.Count, Is.EqualTo(4));
+            Assert.That(listenGroup, Does.Contain("silent"));
+            Assert.That(listenGroup, Does.Contain("enlist"));
+            Assert.That(listenGroup, Does.Contain("inlets"));
+            
+            // Find the google group
+            List<string>? googleGroup = output.FirstOrDefault(g => g.Contains("google"));
+            Assert.That(googleGroup, Is.Not.Null);
+            Assert.That(googleGroup!.Count, Is.EqualTo(2));
+            Assert.That(googleGroup, Does.Contain("gogole"));
+        });
+    }
+
+    [Test]
+    public void GroupAnagrams_WithNoAnagrams_ReturnsIndividualGroups()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Group Anagrams");
+        string[] input = ["abc", "def", "ghi"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        var output = (List<List<string>>)result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Count, Is.EqualTo(3));
+            Assert.That(output.All(g => g.Count == 1), Is.True);
+        });
+    }
+
+    [Test]
+    public void GroupAnagrams_WithIdenticalStrings_GroupsTogether()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Group Anagrams");
+        string[] input = ["test", "test", "test"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        var output = (List<List<string>>)result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Count, Is.EqualTo(1));
+            Assert.That(output[0].Count, Is.EqualTo(3));
+        });
+    }
+
+    [Test]
+    public void GroupAnagrams_WithLargeDataset_HandlesEfficiently()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Group Anagrams");
+        var largeInput = new List<string>();
+        for (int i = 0; i < 100; i++)
+        {
+            largeInput.Add("listen");
+            largeInput.Add("silent");
+            // Create unique strings using different letter combinations
+            largeInput.Add(new string((char)('a' + i % 26), 3));
+        }
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(largeInput.ToArray());
+        var output = (List<List<string>>)result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Count, Is.GreaterThanOrEqualTo(2)); // At least listen/silent group and some unique groups
+            
+            List<string>? listenGroup = output.FirstOrDefault(g => g.Contains("listen"));
+            Assert.That(listenGroup, Is.Not.Null);
+            Assert.That(listenGroup!.Count, Is.EqualTo(200)); // 100 listen + 100 silent
+        });
+    }
+
+    [Test]
+    public void GroupAnagrams_GenerateSampleInput_ReturnsValidStringArray()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Group Anagrams");
+
+        // Act
+        object sample = algorithm.GenerateSampleInput(10);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sample, Is.TypeOf<string[]>());
+            string[] stringArray = (string[])sample;
+            Assert.That(stringArray.Length, Is.EqualTo(6)); // Sample input has 6 strings
+            Assert.That(algorithm.ValidateInput(sample), Is.True);
+        });
+    }
+
+    #endregion
+
     #region TwoNumberSum Integration Tests
 
     [Test]
@@ -381,7 +544,7 @@ public class ArrayAlgorithmsIntegrationTests
         {
             IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
             Assert.That(algorithms, Is.Not.Empty);
-            Assert.That(algorithms.Count(), Is.EqualTo(4));
+            Assert.That(algorithms.Count(), Is.EqualTo(5));
             Assert.That(algorithms.Select(a => a.Name),
                 Contains.Item("Contains Duplicate"));
             Assert.That(algorithms.Select(a => a.Name),
@@ -390,6 +553,8 @@ public class ArrayAlgorithmsIntegrationTests
                 Contains.Item("Valid Anagram (Dictionary)"));
             Assert.That(algorithms.Select(a => a.Name),
                 Contains.Item("Two Number Sum"));
+            Assert.That(algorithms.Select(a => a.Name),
+                Contains.Item("Group Anagrams"));
         });
     }
 
@@ -437,6 +602,7 @@ public class ArrayAlgorithmsIntegrationTests
         IAlgorithm validAnagramArray = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         IAlgorithm validAnagramDict = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
         IAlgorithm twoNumberSum = _algorithmFactory.GetAlgorithm("Two Number Sum");
+        IAlgorithm groupAnagrams = _algorithmFactory.GetAlgorithm("Group Anagrams");
 
         // Assert
         Assert.Multiple(() =>
@@ -455,6 +621,11 @@ public class ArrayAlgorithmsIntegrationTests
             Assert.That(twoNumberSum.ValidateInput(Tuple.Create(new[] { 1, 2 }, 3)), Is.True);
             Assert.That(twoNumberSum.ValidateInput(Tuple.Create(System.Array.Empty<int>(), 3)), Is.False);
             Assert.That(twoNumberSum.ValidateInput(new[] { 1, 2, 3 }), Is.False);
+
+            // GroupAnagrams should accept non-empty string arrays
+            Assert.That(groupAnagrams.ValidateInput(new[] { "test", "tset" }), Is.True);
+            Assert.That(groupAnagrams.ValidateInput(System.Array.Empty<string>()), Is.False);
+            Assert.That(groupAnagrams.ValidateInput("not an array"), Is.False);
         });
     }
 
@@ -501,11 +672,11 @@ public class ArrayAlgorithmsIntegrationTests
             AlgorithmResult arrayResult = arrayImpl.ExecuteAsync(testCase);
             AlgorithmResult dictResult = dictImpl.ExecuteAsync(testCase);
 
-            PropertyInfo[]? arrayOutputProps = arrayResult.Output?.GetType().GetProperties();
+            PropertyInfo[]? arrayOutputProps = arrayResult.Output?.GetType()?.GetProperties();
             PropertyInfo? arrayIsAnagramProp = arrayOutputProps?.FirstOrDefault(p => p.Name == "IsAnagram");
             bool arrayIsAnagram = (bool)(arrayIsAnagramProp?.GetValue(arrayResult.Output) ?? false);
 
-            PropertyInfo[]? dictOutputProps = dictResult.Output?.GetType().GetProperties();
+            PropertyInfo[]? dictOutputProps = dictResult.Output?.GetType()?.GetProperties();
             PropertyInfo? dictIsAnagramProp = dictOutputProps?.FirstOrDefault(p => p.Name == "IsAnagram");
             bool dictIsAnagram = (bool)(dictIsAnagramProp?.GetValue(dictResult.Output) ?? false);
 

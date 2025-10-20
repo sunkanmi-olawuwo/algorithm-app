@@ -33,6 +33,7 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, ValidAnagramDictionary>();
                 services.AddSingleton<IAlgorithm, ValidAnagramArray>();
                 services.AddSingleton<IAlgorithm, TwoNumberSum>();
+                services.AddSingleton<IAlgorithm, GroupAnagrams>();
                 services.AddSingleton<IAlgorithm, ArrayAlgorithmScratchPad>();
 
                 // Algorithm factory
