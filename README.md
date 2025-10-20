@@ -20,9 +20,13 @@ algorithms/
 - Prepare for technical interviews
 - Develop clean, readable code practices
 
-## License
+## Status Badges
 
-This repository is for educational purposes. Code implementations are original unless otherwise noted.
+Add these badges to your README.md:
+
+```markdown
+[![CI](https://github.com/sunkanmi-olawuwo/algorithm-app/actions/workflows/ci.yml/badge.svg)](https://github.com/sunkanmi-olawuwo/algorithm-app/actions/workflows/ci.yml)
+```
 
 ---
 
