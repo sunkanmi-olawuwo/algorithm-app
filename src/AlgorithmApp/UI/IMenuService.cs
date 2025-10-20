@@ -1,11 +1,10 @@
-﻿using static AlgorithmApp.Core.AppEnum;
-using static AlgorithmApp.Core.AppModels;
+﻿using AlgorithmApp.Core;
 
 namespace AlgorithmApp.UI;
 
-public interface IMenuService
+internal interface IMenuService
 {
-    MenuChoice ShowMainMenu();
+    AppEnum.MenuChoice ShowMainMenu();
     string SelectAlgorithm();
     IEnumerable<string> SelectMultipleAlgorithms();
     void ShowDocumentation();

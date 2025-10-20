@@ -1,7 +1,5 @@
 using AlgorithmApp.Core;
 using Moq;
-using static AlgorithmApp.Core.AppModels;
-using static AlgorithmApp.Core.IService;
 
 namespace AlgorithmApp.Tests.Core;
 
@@ -24,9 +22,9 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithValidAlgorithms_ReturnsComparisonResult()
     {
         // Arrange
-        var algorithms = new[] { "Algorithm1", "Algorithm2" };
-        var mockAlg1 = SetupMockAlgorithm("Algorithm1");
-        var mockAlg2 = SetupMockAlgorithm("Algorithm2");
+        string[] algorithms = new[] { "Algorithm1", "Algorithm2" };
+        Mock<IAlgorithm> mockAlg1 = SetupMockAlgorithm("Algorithm1");
+        Mock<IAlgorithm> mockAlg2 = SetupMockAlgorithm("Algorithm2");
         
         _mockFactory.Setup(f => f.GetAlgorithm("Algorithm1")).Returns(mockAlg1.Object);
         _mockFactory.Setup(f => f.GetAlgorithm("Algorithm2")).Returns(mockAlg2.Object);
@@ -35,7 +33,7 @@ public class AlgorithmComparerTests
         var metrics2 = new PerformanceMetrics(TimeSpan.FromMilliseconds(50), 2000);
         
         // Setup the measurer to return different metrics for different calls
-        var sequence = 0;
+        int sequence = 0;
         _mockMeasurer.Setup(m => m.Measure(It.IsAny<Action>()))
             .Returns(() => {
                 sequence++;
@@ -44,7 +42,7 @@ public class AlgorithmComparerTests
             .Callback<Action>(action => action()); // Execute the action
             
         // Act
-        var result = _comparer.CompareAlgorithms(algorithms, 10);
+        ComparisonResult result = _comparer.CompareAlgorithms(algorithms, 10);
         
         // Assert
         Assert.Multiple(() =>
@@ -61,8 +59,8 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithMissingAlgorithm_SkipsIt()
     {
         // Arrange
-        var algorithms = new[] { "Algorithm1", "NonExistentAlgorithm" };
-        var mockAlg1 = SetupMockAlgorithm("Algorithm1");
+        string[] algorithms = new[] { "Algorithm1", "NonExistentAlgorithm" };
+        Mock<IAlgorithm> mockAlg1 = SetupMockAlgorithm("Algorithm1");
         
         _mockFactory.Setup(f => f.GetAlgorithm("Algorithm1")).Returns(mockAlg1.Object);
         _mockFactory.Setup(f => f.GetAlgorithm("NonExistentAlgorithm")).Returns((IAlgorithm)null!);
@@ -73,7 +71,7 @@ public class AlgorithmComparerTests
             .Callback<Action>(action => action());
             
         // Act
-        var result = _comparer.CompareAlgorithms(algorithms, 10);
+        ComparisonResult result = _comparer.CompareAlgorithms(algorithms, 10);
         
         // Assert
         Assert.Multiple(() =>
@@ -88,9 +86,9 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithInvalidInput_SkipsAlgorithm()
     {
         // Arrange
-        var algorithms = new[] { "Algorithm1", "InvalidAlgorithm" };
+        string[] algorithms = new[] { "Algorithm1", "InvalidAlgorithm" };
         
-        var mockAlg1 = SetupMockAlgorithm("Algorithm1");
+        Mock<IAlgorithm> mockAlg1 = SetupMockAlgorithm("Algorithm1");
         var mockInvalid = new Mock<IAlgorithm>();
         mockInvalid.Setup(a => a.Name).Returns("InvalidAlgorithm");
         mockInvalid.Setup(a => a.GenerateSampleInput(It.IsAny<int>())).Returns("invalid input");
@@ -105,7 +103,7 @@ public class AlgorithmComparerTests
             .Callback<Action>(action => action());
             
         // Act
-        var result = _comparer.CompareAlgorithms(algorithms, 10);
+        ComparisonResult result = _comparer.CompareAlgorithms(algorithms, 10);
         
         // Assert
         Assert.Multiple(() =>
@@ -119,12 +117,12 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithNoValidAlgorithms_ReturnsEmptyResult()
     {
         // Arrange
-        var algorithms = new[] { "NonExistent1", "NonExistent2" };
+        string[] algorithms = new[] { "NonExistent1", "NonExistent2" };
         
         _mockFactory.Setup(f => f.GetAlgorithm(It.IsAny<string>())).Returns((IAlgorithm)null!);
         
         // Act
-        var result = _comparer.CompareAlgorithms(algorithms, 10);
+        ComparisonResult result = _comparer.CompareAlgorithms(algorithms, 10);
         
         // Assert
         Assert.Multiple(() =>

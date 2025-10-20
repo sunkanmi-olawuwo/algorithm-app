@@ -1,13 +1,11 @@
 ﻿using AlgorithmApp.Core;
 using Spectre.Console.Extensions;
-using static AlgorithmApp.Core.AppEnum;
-using static AlgorithmApp.Core.AppModels;
 
 namespace AlgorithmApp.UI;
 
-public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMenuService
+internal class MenuService(IAlgorithmFactory algorithmFactory) : IMenuService
 {
-    public MenuChoice ShowMainMenu()
+    public AppEnum.MenuChoice ShowMainMenu()
     {
         Console.WriteLine("\n=== Algorithm Learning Application ===");
         Console.WriteLine("1. Run Algorithm");
@@ -20,15 +18,15 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
         {
             return choice switch
             {
-                1 => MenuChoice.RunAlgorithm,
-                2 => MenuChoice.ViewDocumentation,
-                3 => MenuChoice.CompareAlgorithms,
-                4 => MenuChoice.Exit,
-                _ => MenuChoice.Exit
+                1 => AppEnum.MenuChoice.RunAlgorithm,
+                2 => AppEnum.MenuChoice.ViewDocumentation,
+                3 => AppEnum.MenuChoice.CompareAlgorithms,
+                4 => AppEnum.MenuChoice.Exit,
+                _ => AppEnum.MenuChoice.Exit
             };
         }
 
-        return MenuChoice.Exit;
+        return AppEnum.MenuChoice.Exit;
     }
 
     public string SelectAlgorithm()
@@ -60,7 +58,7 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
             Console.WriteLine($"\n{category} Algorithms:");
             Console.WriteLine(new string('-', 50));
 
-            foreach (IService.IAlgorithm? algorithm in algorithmFactory.GetAlgorithmsByCategory(category))
+            foreach (IAlgorithm? algorithm in algorithmFactory.GetAlgorithmsByCategory(category))
             {
                 Console.WriteLine($"\n{algorithm.Name}");
                 Console.WriteLine($"  Description: {algorithm.Description}");
@@ -136,9 +134,9 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
         Console.ReadKey();
     }
     
-    private string FormatMemorySize(long bytes)
+    private static string FormatMemorySize(long bytes)
     {
-        string[] units = { "B", "KB", "MB", "GB" };
+        string[] units = ["B", "KB", "MB", "GB"];
         int unitIndex = 0;
         double size = bytes;
         
@@ -167,7 +165,7 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
             return Enumerable.Empty<string>();
         }
 
-        List<Core.IService.IAlgorithm> algorithms;
+        List<IAlgorithm> algorithms;
         
         if (categoryChoice == 0)
         {
@@ -175,7 +173,7 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
         }
         else if (categoryChoice > 0 && categoryChoice <= categories.Count)
         {
-            string? selectedCategory = categories[categoryChoice - 1];
+            string selectedCategory = categories[categoryChoice - 1];
             algorithms = algorithmFactory.GetAlgorithmsByCategory(selectedCategory).ToList();
         }
         else
@@ -191,7 +189,7 @@ public class MenuService(Core.IService.IAlgorithmFactory algorithmFactory) : IMe
         }
         
         Console.WriteLine("\nEnter algorithm numbers separated by commas (or 0 to select all):");
-        string? input = Console.ReadLine() ?? "";
+        string input = Console.ReadLine() ?? "";
         
         if (input == "0")
         {

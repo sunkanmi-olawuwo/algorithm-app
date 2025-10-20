@@ -1,6 +1,6 @@
 using System.Reflection;
 using AlgorithmApp.Algorithms.Array;
-using static AlgorithmApp.Core.AppModels;
+using AlgorithmApp.Core;
 
 namespace AlgorithmApp.Tests.Algorithms.Array;
 
@@ -26,7 +26,7 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithValidArray_ReturnsTrue()
     {
         // Arrange
-        int[]? input = new[] { 1, 2, 3, 4, 5 };
+        int[] input = new[] { 1, 2, 3, 4, 5 };
         
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -39,7 +39,7 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithEmptyArray_ReturnsFalse()
     {
         // Arrange
-        int[]? input = new int[0];
+        int[] input = new int[0];
         
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -52,7 +52,7 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithNonArrayInput_ReturnsFalse()
     {
         // Arrange
-        string? input = "not an array";
+        string input = "not an array";
         
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -68,7 +68,7 @@ public class ContainsDuplicateTests
         int size = 10;
         
         // Act
-        object? result = _algorithm.GenerateSampleInput(size);
+        object result = _algorithm.GenerateSampleInput(size);
         
         // Assert
         Assert.That(result, Is.TypeOf<int[]>());
@@ -79,10 +79,10 @@ public class ContainsDuplicateTests
     public void ExecuteAsync_WithDuplicates_ReturnsTrue()
     {
         // Arrange
-        int[]? input = new[] { 1, 2, 3, 4, 5, 3 };
+        int[] input = new[] { 1, 2, 3, 4, 5, 3 };
         
         // Act
-        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
         bool containsDuplicate = GetOutputValue(result);
         // Assert
         Assert.That(containsDuplicate, Is.EqualTo(true));
@@ -92,10 +92,10 @@ public class ContainsDuplicateTests
     public void ExecuteAsync_WithoutDuplicates_ReturnsFalse()
     {
         // Arrange
-        int[]? input = new[] { 1, 2, 3, 4, 5 };
+        int[] input = new[] { 1, 2, 3, 4, 5 };
         
         // Act
-        AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
         bool containsDuplicate = GetOutputValue(result);
         // Assert
         Assert.That(containsDuplicate, Is.EqualTo(false));

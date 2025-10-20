@@ -1,6 +1,5 @@
 using AlgorithmApp.Core;
 using Moq;
-using static AlgorithmApp.Core.IService;
 
 namespace AlgorithmApp.Tests.Core;
 
@@ -28,7 +27,7 @@ public class AlgorithmFactoryTests
     public void GetAlgorithm_WithExistingName_ReturnsAlgorithm()
     {
         // Act
-        var result = _factory.GetAlgorithm("Algorithm2");
+        IAlgorithm result = _factory.GetAlgorithm("Algorithm2");
         
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -39,7 +38,7 @@ public class AlgorithmFactoryTests
     public void GetAlgorithm_WithNonExistingName_ReturnsNull()
     {
         // Act
-        var result = _factory.GetAlgorithm("NonExistingAlgorithm");
+        IAlgorithm result = _factory.GetAlgorithm("NonExistingAlgorithm");
         
         // Assert
         Assert.That(result, Is.Null);
@@ -49,7 +48,7 @@ public class AlgorithmFactoryTests
     public void GetAlgorithm_IsCaseInsensitive()
     {
         // Act
-        var result = _factory.GetAlgorithm("aLgoRiThm3");
+        IAlgorithm result = _factory.GetAlgorithm("aLgoRiThm3");
         
         // Assert
         Assert.That(result, Is.Not.Null);
@@ -72,7 +71,7 @@ public class AlgorithmFactoryTests
     public void GetAlgorithmsByCategory_WithNonExistingCategory_ReturnsEmptyCollection()
     {
         // Act
-        var result = _factory.GetAlgorithmsByCategory("NonExistingCategory");
+        IEnumerable<IAlgorithm> result = _factory.GetAlgorithmsByCategory("NonExistingCategory");
         
         // Assert
         Assert.That(result, Is.Empty);

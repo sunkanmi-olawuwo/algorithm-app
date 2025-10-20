@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using static AlgorithmApp.Core.AppModels;
+﻿using System.Collections.ObjectModel;
+using System.Security.Cryptography;
+using AlgorithmApp.Core;
 
 namespace AlgorithmApp.Algorithms.Array;
 
-public class TwoNumberSum : ArrayAlgorithmBase
+internal class TwoNumberSum : ArrayAlgorithmBase
 {
     public override string Name => "Two Number Sum";
     public override string Description => "Given an array of integers nums and an integer target," +
@@ -18,11 +19,10 @@ public class TwoNumberSum : ArrayAlgorithmBase
                                    " We use a hashmap for O(1) lookups";
     public override object GenerateSampleInput(int size)
     {
-        var random = new Random();
-        int[]? array = Enumerable.Range(0, size)
-            .Select(_ => random.Next(-1000, 1001))
+        int[] array = Enumerable.Range(0, size)
+            .Select(_ => RandomNumberGenerator.GetInt32(-1000, 1001))
             .ToArray();
-        int targetSum = array[random.Next(size)] + array[random.Next(size)];
+        int targetSum = array[RandomNumberGenerator.GetInt32(size)] + array[RandomNumberGenerator.GetInt32(size)];
         return Tuple.Create(array, targetSum);
     }
     public override bool ValidateInput(object input) =>
@@ -37,12 +37,12 @@ public class TwoNumberSum : ArrayAlgorithmBase
         }
 
         (int[]? array, int targetSum) = (Tuple<int[], int>)input;
-        var steps = new List<string>
-        {
+        Collection<string> steps =
+        [
             $"Input array: [{string.Join(", ", array)}]",
             $"Target sum: {targetSum}",
             "Using a hash set to track seen numbers."
-        };
+        ];
 
         var dicStore = new Dictionary<int, int>();
         int bestIdx1 = -1, bestIdx2 = -1;
@@ -67,9 +67,7 @@ public class TwoNumberSum : ArrayAlgorithmBase
         if (bestIdx1 != -1)
         {
             steps.Add($"Selected pair: nums[{bestIdx1}] + nums[{bestIdx2}] == {targetSum}");
-            int[,]? output = new int[2, 2];
-            output[0, 0] = bestIdx1;
-            output[0, 1] = bestIdx2;
+            int[][] output = [[bestIdx1, bestIdx2]];
             return new AlgorithmResult
             {
                 AlgorithmName = Name,

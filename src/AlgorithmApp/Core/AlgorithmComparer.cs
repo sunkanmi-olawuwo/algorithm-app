@@ -1,14 +1,11 @@
-using static AlgorithmApp.Core.AppModels;
-using static AlgorithmApp.Core.IService;
-
 namespace AlgorithmApp.Core;
 
-public interface IAlgorithmComparer
+internal interface IAlgorithmComparer
 {
     ComparisonResult CompareAlgorithms(IEnumerable<string> algorithmNames, int inputSize);
 }
 
-public class AlgorithmComparer : IAlgorithmComparer
+internal class AlgorithmComparer : IAlgorithmComparer
 {
     private readonly IAlgorithmFactory _algorithmFactory;
     private readonly IPerformanceMeasurer _performanceMeasurer;
@@ -34,7 +31,7 @@ public class AlgorithmComparer : IAlgorithmComparer
             }
 
             // Generate input
-            object? input = algorithm.GenerateSampleInput(inputSize);
+            object input = algorithm.GenerateSampleInput(inputSize);
                 
             // Validate input
             if (!algorithm.ValidateInput(input))
@@ -44,10 +41,7 @@ public class AlgorithmComparer : IAlgorithmComparer
 
             // Measure performance
             AlgorithmResult? result = null;
-            PerformanceMetrics? metrics = _performanceMeasurer.Measure(() =>
-            {
-                result = algorithm.ExecuteAsync(input);
-            });
+            PerformanceMetrics metrics = _performanceMeasurer.Measure(() => result = algorithm.ExecuteAsync(input));
                 
             results[name] = metrics;
         }
@@ -56,7 +50,7 @@ public class AlgorithmComparer : IAlgorithmComparer
         string fastest = "";
         string mostMemoryEfficient = "";
             
-        if (results.Any())
+        if (results.Count > 0)
         {
             fastest = results.OrderBy(r => r.Value.ExecutionTime).First().Key;
             mostMemoryEfficient = results.OrderBy(r => r.Value.MemoryUsed).First().Key;

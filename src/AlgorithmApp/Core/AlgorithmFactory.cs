@@ -1,8 +1,6 @@
-﻿using static AlgorithmApp.Core.IService;
+﻿namespace AlgorithmApp.Core;
 
-namespace AlgorithmApp.Core;
-
-public class AlgorithmFactory(IEnumerable<IService.IAlgorithm> algorithms) : IAlgorithmFactory
+internal class AlgorithmFactory(IEnumerable<IAlgorithm> algorithms) : IAlgorithmFactory
 {
     public IAlgorithm GetAlgorithm(string name) =>
         algorithms.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase))!;

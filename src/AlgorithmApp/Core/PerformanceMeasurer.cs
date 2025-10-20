@@ -1,23 +1,25 @@
 using System.Diagnostics;
-using static AlgorithmApp.Core.AppModels;
 
 namespace AlgorithmApp.Core;
 
-public interface IPerformanceMeasurer
+internal interface IPerformanceMeasurer
 {
     PerformanceMetrics Measure(Action action);
 }
 
-public class PerformanceMeasurer : IPerformanceMeasurer
+internal class PerformanceMeasurer : IPerformanceMeasurer
 {
     public PerformanceMetrics Measure(Action action)
     {
         // Record the starting memory
+        // Note: GC operations are necessary for accurate memory measurement in performance testing
+        #pragma warning disable S1215 // "GC.Collect" should not be called
         GC.Collect();
         GC.WaitForPendingFinalizers();
         GC.Collect();
             
         long startMemory = GC.GetTotalMemory(true);
+        #pragma warning restore S1215
             
         // Start the timer
         var stopwatch = Stopwatch.StartNew();

@@ -1,8 +1,10 @@
-﻿using AlgorithmApp.Core;
+﻿using System.Collections.ObjectModel;
+using System.Security.Cryptography;
+using AlgorithmApp.Core;
 
 namespace AlgorithmApp.Algorithms.Array;
 
-public class ValidAnagramArray : ArrayAlgorithmBase
+internal class ValidAnagramArray : ArrayAlgorithmBase
 {
     public override string Name => "Valid Anagram (Array)";
     public override string Description => "Determines if two strings are anagrams using an array to count character occurrences.";
@@ -17,15 +19,14 @@ public class ValidAnagramArray : ArrayAlgorithmBase
 
     public override object GenerateSampleInput(int size)
     {
-        var random = new Random();
         const string chars = "abcdefghijklmnopqrstuvwxyz";
-        string? str1 = new string(Enumerable.Range(0, size)
-            .Select(_ => chars[random.Next(chars.Length)]).ToArray());
-        string? str2 = new string(str1.ToCharArray().OrderBy(_ => random.Next()).ToArray());
+        string str1 = new string(Enumerable.Range(0, size)
+            .Select(_ => chars[RandomNumberGenerator.GetInt32(chars.Length)]).ToArray());
+        string str2 = new string(str1.ToCharArray().OrderBy(_ => RandomNumberGenerator.GetInt32(int.MaxValue)).ToArray());
         return Tuple.Create(str1, str2);
     }
 
-    public override AppModels.AlgorithmResult ExecuteAsync(object input)
+    public override AlgorithmResult ExecuteAsync(object input)
     {
         if (!ValidateInput(input))
         {
@@ -33,17 +34,17 @@ public class ValidAnagramArray : ArrayAlgorithmBase
         }
 
         (string? s, string? t) = (Tuple<string, string>)input;
-        var steps = new List<string>
-        {
+        Collection<string> steps =
+        [
             $"Input strings: s = \"{s}\", t = \"{t}\"",
             "If lengths differ, they cannot be anagrams.",
             $"Length of s: {s.Length}, Length of t: {t.Length}"
-        };
+        ];
 
         if (s.Length != t.Length)
         {
             steps.Add("Lengths differ. Returning false.");
-            return new AppModels.AlgorithmResult
+            return new AlgorithmResult
             {
                 AlgorithmName = Name,
                 Input = input,
@@ -52,7 +53,7 @@ public class ValidAnagramArray : ArrayAlgorithmBase
             };
         }
 
-        int[]? count = new int[26];
+        int[] count = new int[26];
         steps.Add("Using an array of size 26 to count character occurrences (a-z).");
         steps.Add("Converting characters to lowercase and updating counts.");
         
@@ -66,7 +67,7 @@ public class ValidAnagramArray : ArrayAlgorithmBase
         bool isAnagram = count.All(c => c == 0);
         steps.Add(isAnagram ? "All counts are zero. Strings are anagrams." : "Counts differ. Strings are not anagrams.");
         
-        return new AppModels.AlgorithmResult
+        return new AlgorithmResult
         {
             AlgorithmName = Name,
             Input = input,

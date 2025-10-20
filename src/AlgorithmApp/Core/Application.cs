@@ -1,11 +1,9 @@
 ﻿using AlgorithmApp.UI;
 using Microsoft.Extensions.Logging;
-using static AlgorithmApp.Core.AppEnum;
-using static AlgorithmApp.Core.IService;
 
 namespace AlgorithmApp.Core;
 
-public class Application(
+internal class Application(
     IMenuService menuService,
     IAlgorithmRunner algorithmRunner,
     IAlgorithmComparer algorithmComparer,
@@ -15,9 +13,9 @@ public class Application(
     {
         while (true)
         {
-            MenuChoice choice = menuService.ShowMainMenu();
+            AppEnum.MenuChoice choice = menuService.ShowMainMenu();
 
-            if (choice == MenuChoice.Exit)
+            if (choice == AppEnum.MenuChoice.Exit)
             {
                 break;
             }
@@ -28,19 +26,19 @@ public class Application(
         logger.LogInformation("Application terminated");
     }
 
-    private void ProcessChoice(MenuChoice choice)
+    private void ProcessChoice(AppEnum.MenuChoice choice)
     {
         try
         {
             switch (choice)
             {
-                case MenuChoice.RunAlgorithm:
+                case AppEnum.MenuChoice.RunAlgorithm:
                     algorithmRunner.RunSelectedAlgorithm();
                     break;
-                case MenuChoice.ViewDocumentation:
+                case AppEnum.MenuChoice.ViewDocumentation:
                     menuService.ShowDocumentation();
                     break;
-                case MenuChoice.CompareAlgorithms:
+                case AppEnum.MenuChoice.CompareAlgorithms:
                     CompareAlgorithms();
                     break;
             }
@@ -56,7 +54,7 @@ public class Application(
     {
         var selectedAlgorithms = menuService.SelectMultipleAlgorithms().ToList();
             
-        if (!selectedAlgorithms.Any())
+        if (selectedAlgorithms.Count == 0)
         {
             Console.WriteLine("No algorithms selected for comparison.");
             return;
@@ -71,7 +69,7 @@ public class Application(
             
         Console.WriteLine($"Comparing {selectedAlgorithms.Count} algorithms with input size {size}...");
             
-        AppModels.ComparisonResult? result = algorithmComparer.CompareAlgorithms(selectedAlgorithms, size);
+        ComparisonResult result = algorithmComparer.CompareAlgorithms(selectedAlgorithms, size);
         menuService.DisplayComparisonResults(result);
     }
 }

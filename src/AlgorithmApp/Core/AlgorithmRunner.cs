@@ -1,11 +1,9 @@
 ﻿using AlgorithmApp.UI;
 using Microsoft.Extensions.Logging;
-using static AlgorithmApp.Core.AppModels;
-using static AlgorithmApp.Core.IService;
 
 namespace AlgorithmApp.Core;
 
-public class AlgorithmRunner(
+internal class AlgorithmRunner(
     IAlgorithmFactory algorithmFactory,
     IMenuService menuService,
     ILogger<AlgorithmRunner> logger,
@@ -13,8 +11,8 @@ public class AlgorithmRunner(
 {
     public void RunSelectedAlgorithm()
     {
-        string? algorithmName = menuService.SelectAlgorithm();
-        IAlgorithm? algorithm = algorithmFactory.GetAlgorithm(algorithmName);
+        string algorithmName = menuService.SelectAlgorithm();
+        IAlgorithm algorithm = algorithmFactory.GetAlgorithm(algorithmName);
 
         Console.WriteLine($"\n{algorithm.Name}");
         Console.WriteLine($"Description: {algorithm.Description}");
@@ -29,7 +27,7 @@ public class AlgorithmRunner(
                 Console.WriteLine("Invalid size. Using default size of 10.");
                 size = 10;
             }
-            object? input = algorithm.GenerateSampleInput(size);
+            object input = algorithm.GenerateSampleInput(size);
             if (!algorithm.ValidateInput(input))
             {
                 Console.WriteLine("Generated input is invalid for the selected algorithm.");
@@ -40,9 +38,7 @@ public class AlgorithmRunner(
             
             AlgorithmResult? result = null;
             
-            PerformanceMetrics? metrics = performanceMeasurer.Measure(() => {
-                result = algorithm.ExecuteAsync(input);
-            });
+            PerformanceMetrics metrics = performanceMeasurer.Measure(() => result = algorithm.ExecuteAsync(input));
             
             // Attach performance metrics to result
             if (result == null)
@@ -50,7 +46,7 @@ public class AlgorithmRunner(
                 return;
             }
 
-            AlgorithmResult? resultWithMetrics = result with { 
+            AlgorithmResult resultWithMetrics = result with { 
                 PerformanceMetrics = metrics
             };
             

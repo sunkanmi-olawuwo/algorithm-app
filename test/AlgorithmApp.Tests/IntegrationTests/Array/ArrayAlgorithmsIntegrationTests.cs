@@ -1,7 +1,6 @@
 using System.Reflection;
 using AlgorithmApp.Algorithms.Array;
 using AlgorithmApp.Core;
-using static AlgorithmApp.Core.IService;
 
 namespace AlgorithmApp.Tests.IntegrationTests.Array;
 
@@ -31,11 +30,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ContainsDuplicate_WithDuplicates_ReturnsTrue()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
         int[] input = { 1, 5, 9, 2, 5, 8 };
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -54,11 +53,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ContainsDuplicate_WithoutDuplicates_ReturnsFalse()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
         int[] input = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -72,12 +71,12 @@ public class ArrayAlgorithmsIntegrationTests
     public void ContainsDuplicate_WithLargeDataset_HandlesEfficiently()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
-        int[]? input = Enumerable.Range(1, 5000).ToArray();
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
+        int[] input = Enumerable.Range(1, 5000).ToArray();
         input = input.Concat(new[] { 100 }).ToArray(); // Add duplicate
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -95,11 +94,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ContainsDuplicate_WithAllSameNumbers_ReturnsTrue()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
         int[] input = { 7, 7, 7, 7, 7 };
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -117,11 +116,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramArray_WithValidAnagrams_ReturnsTrue()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         var input = Tuple.Create("listen", "silent");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -140,11 +139,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramArray_WithNonAnagrams_ReturnsFalse()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         var input = Tuple.Create("hello", "world");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -158,11 +157,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramArray_WithDifferentLengths_ReturnsFalse()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         var input = Tuple.Create("short", "muchlonger");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -180,11 +179,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramArray_WithComplexAnagrams_ReturnsTrue()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         var input = Tuple.Create("conversation", "conservation");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -198,11 +197,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramArray_WithMixedCase_HandlesCorrectly()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         var input = Tuple.Create("Anagram", "Nagaram");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -220,11 +219,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramDictionary_WithValidAnagrams_ReturnsTrue()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
         var input = Tuple.Create("anagram", "nagaram");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -243,11 +242,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramDictionary_WithNonAnagrams_ReturnsFalse()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
         var input = Tuple.Create("rat", "car");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -261,11 +260,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramDictionary_WithRepeatedCharacters_HandlesCorrectly()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
         var input = Tuple.Create("aabbcc", "abcabc");
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -279,13 +278,13 @@ public class ArrayAlgorithmsIntegrationTests
     public void ValidAnagramDictionary_WithLongStrings_PerformsWell()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
-        string? str1 = new string('a', 500) + new string('b', 500);
-        string? str2 = new string('b', 500) + new string('a', 500);
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
+        string str1 = new string('a', 500) + new string('b', 500);
+        string str2 = new string('b', 500) + new string('a', 500);
         var input = Tuple.Create(str1, str2);
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
 
         // Assert
         PropertyInfo[]? outputProps = result.Output?.GetType().GetProperties();
@@ -307,18 +306,18 @@ public class ArrayAlgorithmsIntegrationTests
     public void TwoNumberSum_WithValidPair_ReturnsCorrectIndices()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
         var input = Tuple.Create(new[] { 2, 7, 11, 15 }, 9);
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
 
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(1));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(1));
             Assert.That(result.Steps.Any(s => s.Contains("Selected pair")), Is.True);
         });
     }
@@ -327,18 +326,18 @@ public class ArrayAlgorithmsIntegrationTests
     public void TwoNumberSum_WithNegativeNumbers_ReturnsCorrectIndices()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
         var input = Tuple.Create(new[] { -3, -1, 2, 4, 6 }, 3);
 
         // Act
-        AppModels.AlgorithmResult? result = algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
 
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(4));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(4));
         });
     }
 
@@ -346,10 +345,10 @@ public class ArrayAlgorithmsIntegrationTests
     public void TwoNumberSum_GenerateSampleInput_ReturnsValidTuple()
     {
         // Arrange
-        IAlgorithm? algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Two Number Sum");
 
         // Act
-        object? sample = algorithm.GenerateSampleInput(10);
+        object sample = algorithm.GenerateSampleInput(10);
 
         // Assert
         Assert.Multiple(() =>
@@ -369,12 +368,12 @@ public class ArrayAlgorithmsIntegrationTests
     public void AlgorithmFactory_CanRetrieveAllArrayAlgorithms()
     {
         // Act
-        IEnumerable<IAlgorithm>? arrayAlgorithms = _algorithmFactory.GetAlgorithmsByCategory("Array");
+        IEnumerable<IAlgorithm> arrayAlgorithms = _algorithmFactory.GetAlgorithmsByCategory("Array");
 
         // Assert
         Assert.Multiple(() =>
         {
-            IAlgorithm[]? algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
+            IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
             Assert.That(algorithms, Is.Not.Empty);
             Assert.That(algorithms.Count(), Is.EqualTo(4));
             Assert.That(algorithms.Select(a => a.Name),
@@ -392,7 +391,7 @@ public class ArrayAlgorithmsIntegrationTests
     public void AllArrayAlgorithms_HaveRequiredProperties()
     {
         // Act
-        IEnumerable<IAlgorithm>? allAlgorithms = _algorithmFactory.GetAllAlgorithms();
+        IEnumerable<IAlgorithm> allAlgorithms = _algorithmFactory.GetAllAlgorithms();
 
         // Assert
         foreach (IAlgorithm? algorithm in allAlgorithms)
@@ -413,12 +412,12 @@ public class ArrayAlgorithmsIntegrationTests
     public void AllArrayAlgorithms_CanGenerateSampleInput()
     {
         // Arrange
-        IEnumerable<IAlgorithm>? allAlgorithms = _algorithmFactory.GetAllAlgorithms();
+        IEnumerable<IAlgorithm> allAlgorithms = _algorithmFactory.GetAllAlgorithms();
 
         // Act & Assert
         foreach (IAlgorithm? algorithm in allAlgorithms)
         {
-            object? sampleInput = algorithm.GenerateSampleInput(10);
+            object sampleInput = algorithm.GenerateSampleInput(10);
             Assert.That(sampleInput, Is.Not.Null,
                 $"Algorithm '{algorithm.Name}' failed to generate sample input");
         }
@@ -428,10 +427,10 @@ public class ArrayAlgorithmsIntegrationTests
     public void AllArrayAlgorithms_ValidateInputCorrectly()
     {
         // Arrange & Act
-        IAlgorithm? containsDuplicate = _algorithmFactory.GetAlgorithm("Contains Duplicate");
-        IAlgorithm? validAnagramArray = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
-        IAlgorithm? validAnagramDict = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
-        IAlgorithm? twoNumberSum = _algorithmFactory.GetAlgorithm("Two Number Sum");
+        IAlgorithm containsDuplicate = _algorithmFactory.GetAlgorithm("Contains Duplicate");
+        IAlgorithm validAnagramArray = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm validAnagramDict = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
+        IAlgorithm twoNumberSum = _algorithmFactory.GetAlgorithm("Two Number Sum");
 
         // Assert
         Assert.Multiple(() =>
@@ -457,11 +456,11 @@ public class ArrayAlgorithmsIntegrationTests
     public void MultipleAlgorithms_ExecuteSequentially_WorkCorrectly()
     {
         // Arrange
-        IAlgorithm? containsDuplicate = _algorithmFactory.GetAlgorithm("Contains Duplicate");
+        IAlgorithm containsDuplicate = _algorithmFactory.GetAlgorithm("Contains Duplicate");
         int[] testArray = { 5, 2, 8, 2, 9, 1 };
 
         // Act
-        AppModels.AlgorithmResult? duplicateResult = containsDuplicate.ExecuteAsync(testArray);
+        AlgorithmResult duplicateResult = containsDuplicate.ExecuteAsync(testArray);
 
         // Assert
 
@@ -480,9 +479,9 @@ public class ArrayAlgorithmsIntegrationTests
     public void BothAnagramAlgorithms_ProduceSameResults()
     {
         // Arrange
-        IAlgorithm? arrayImpl = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
-        IAlgorithm? dictImpl = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
-        Tuple<string, string>[]? testCases = new[]
+        IAlgorithm arrayImpl = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
+        IAlgorithm dictImpl = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
+        Tuple<string, string>[] testCases = new[]
         {
             Tuple.Create("listen", "silent"),
             Tuple.Create("hello", "world"),
@@ -493,8 +492,8 @@ public class ArrayAlgorithmsIntegrationTests
         // Act & Assert
         foreach (Tuple<string, string>? testCase in testCases)
         {
-            AppModels.AlgorithmResult? arrayResult = arrayImpl.ExecuteAsync(testCase);
-            AppModels.AlgorithmResult? dictResult = dictImpl.ExecuteAsync(testCase);
+            AlgorithmResult arrayResult = arrayImpl.ExecuteAsync(testCase);
+            AlgorithmResult dictResult = dictImpl.ExecuteAsync(testCase);
 
             PropertyInfo[]? arrayOutputProps = arrayResult.Output?.GetType().GetProperties();
             PropertyInfo? arrayIsAnagramProp = arrayOutputProps?.FirstOrDefault(p => p.Name == "IsAnagram");

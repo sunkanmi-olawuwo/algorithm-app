@@ -1,10 +1,10 @@
-﻿using static AlgorithmApp.Core.AppModels;
-using static AlgorithmApp.Core.IService;
+﻿using System.Security.Cryptography;
+using AlgorithmApp.Core;
 
 namespace AlgorithmApp.Algorithms.Array;
 
 
-public abstract class ArrayAlgorithmBase : IAlgorithm
+internal abstract class ArrayAlgorithmBase : IAlgorithm
 {
     public abstract string Name { get; }
     public string Category => "Array";
@@ -15,13 +15,10 @@ public abstract class ArrayAlgorithmBase : IAlgorithm
 
     public virtual bool ValidateInput(object input) => input is int[] array && array.Length > 0;
 
-    public virtual object GenerateSampleInput(int size)
-    {
-        var random = new Random();
-        return Enumerable.Range(0, size)
-            .Select(_ => random.Next(-1000, 1001))
+    public virtual object GenerateSampleInput(int size) =>
+        Enumerable.Range(0, size)
+            .Select(_ => RandomNumberGenerator.GetInt32(-1000, 1001))
             .ToArray();
-    }
 
     public abstract AlgorithmResult ExecuteAsync(object input);
 }

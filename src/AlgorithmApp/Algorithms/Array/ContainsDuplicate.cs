@@ -1,9 +1,9 @@
-﻿using AlgorithmApp.Core;
-using static AlgorithmApp.Core.AppModels;
+﻿using System.Collections.ObjectModel;
+using AlgorithmApp.Core;
 
 namespace AlgorithmApp.Algorithms.Array;
 
-public class ContainsDuplicate : ArrayAlgorithmBase
+internal class ContainsDuplicate : ArrayAlgorithmBase
 {
     public override string Name  => "Contains Duplicate";
     public override string Description => "Checks if an array contains any duplicates.";
@@ -11,20 +11,20 @@ public class ContainsDuplicate : ArrayAlgorithmBase
     public override string SpaceComplexity => "O(n)";
     public override string Hint => "Use a HashSet to track seen numbers. This will allow us check if an element is duplicate in constant time";
 
-    public override AppModels.AlgorithmResult ExecuteAsync(object input)
+    public override AlgorithmResult ExecuteAsync(object input)
     {
         if (!ValidateInput(input))
         {
             throw new ArgumentException("Invalid input. Expected non-empty integer array.");
         }
 
-        int[]? array = (int[])input;
-        var steps = new List<string>
-        {
+        int[] array = (int[])input;
+        Collection<string> steps =
+        [
             "A HashSet only keeps unique values — duplicates collapse into one entry.",
-            "If there were any duplicates in the array, the set’s Count will be less than array.Length.",
+            "If there were any duplicates in the array, the set's Count will be less than array.Length.",
             "Create a new HashSet and store the array in it"
-        };
+        ];
 
         var hashSet = new HashSet<int>(array);
         steps.Add($"HashSet created with {hashSet.Count} unique elements from array of length {array.Length}");

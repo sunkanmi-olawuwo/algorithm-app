@@ -1,33 +1,32 @@
-﻿namespace AlgorithmApp.Core;
+﻿using System.Collections.ObjectModel;
 
-public class AppModels
+namespace AlgorithmApp.Core;
+
+internal record ComplexityInfo(string Best = "", string Average = "", string Worst = "")
 {
-    public record ComplexityInfo(string Best = "", string Average = "", string Worst = "")
-    {
-        public override string ToString() =>
-            $"Best: {Best}, Average: {Average}, Worst: {Worst}";
-    }
+    public override string ToString() =>
+        $"Best: {Best}, Average: {Average}, Worst: {Worst}";
+}
 
-    public record AlgorithmResult(
-        string AlgorithmName = "",
-        object? Input = null,
-        object? Output = null)
-    {
-        public List<string> Steps { get; init; } = [];
-        public PerformanceMetrics? PerformanceMetrics { get; init; }
-    }
+internal record AlgorithmResult(
+    string AlgorithmName = "",
+    object? Input = null,
+    object? Output = null)
+{
+    public Collection<string> Steps { get; init; } = [];
+    public PerformanceMetrics? PerformanceMetrics { get; init; }
+}
 
-    public record PerformanceMetrics(
-        TimeSpan ExecutionTime = default,
-        long MemoryUsed = 0,
-        int Comparisons = 0,
-        int Swaps = 0,
-        int Iterations = 0);
+internal record PerformanceMetrics(
+    TimeSpan ExecutionTime = default,
+    long MemoryUsed = 0,
+    int Comparisons = 0,
+    int Swaps = 0,
+    int Iterations = 0);
 
-    public record ComparisonResult(
-        string FastestAlgorithm = "", 
-        string MostMemoryEfficient = "")
-    {
-        public Dictionary<string, PerformanceMetrics> Results { get; init; } = [];
-    }
+internal record ComparisonResult(
+    string FastestAlgorithm = "", 
+    string MostMemoryEfficient = "")
+{
+    public Dictionary<string, PerformanceMetrics> Results { get; init; } = [];
 }

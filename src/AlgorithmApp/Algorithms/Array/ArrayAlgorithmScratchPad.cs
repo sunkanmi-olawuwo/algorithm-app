@@ -1,5 +1,6 @@
+using System.Collections.ObjectModel;
+using AlgorithmApp.Core;
 using Spectre.Console.Extensions;
-using static AlgorithmApp.Core.AppModels;
 
 namespace AlgorithmApp.Algorithms.Array;
 
@@ -19,7 +20,7 @@ namespace AlgorithmApp.Algorithms.Array;
  * ============================================================================
  */
 
-public class ArrayAlgorithmScratchPad : ArrayAlgorithmBase
+internal class ArrayAlgorithmScratchPad : ArrayAlgorithmBase
 {
     // Update these properties based on what you're implementing
     public override string Name => "Array Scratch Pad - Group Anagrams";
@@ -31,7 +32,7 @@ public class ArrayAlgorithmScratchPad : ArrayAlgorithmBase
     public override object GenerateSampleInput(int size)
     {
         // Input: strs = ["act","pots","tops","cat","stop","hat"]
-        string[] sampleInput = new string[] { "listen", "silent", "enlist", "inlets", "google", "gogole" };
+        string[] sampleInput = ["listen", "silent", "enlist", "inlets", "google", "gogole"];
         return sampleInput;
     }
 
@@ -45,7 +46,7 @@ public class ArrayAlgorithmScratchPad : ArrayAlgorithmBase
         }
 
         string[] strs = (string[])input;
-        var steps = new List<string>
+        Collection<string> steps = new()
         {
             "Running the Algorithm via the scratch pad",
             $"Input strings: [{string.Join(", ", strs)}]"
@@ -65,12 +66,14 @@ public class ArrayAlgorithmScratchPad : ArrayAlgorithmBase
             }
 
             string key = string.Join(",", count);
-            if (!res.ContainsKey(key))
+            if (res.TryGetValue(key, out List<string>? value))
             {
-                res[key] = [];
+                value.Add(s);
             }
-
-            res[key].Add(s);
+            else
+            {
+                res[key] = [s];
+            }
         } 
         
         var output = res.Values.ToList();

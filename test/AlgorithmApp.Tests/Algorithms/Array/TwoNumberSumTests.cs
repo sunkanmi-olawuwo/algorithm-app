@@ -87,7 +87,7 @@ public class TwoNumberSumTests
     public void ValidateInput_WithNonTupleInput_ReturnsFalse()
     {
         // Arrange
-        int[]? input = new[] { 1, 2, 3 };
+        int[] input = new[] { 1, 2, 3 };
         
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -103,7 +103,7 @@ public class TwoNumberSumTests
         int size = 10;
         
         // Act
-        object? result = _algorithm.GenerateSampleInput(size);
+        object result = _algorithm.GenerateSampleInput(size);
         
         // Assert
         Assert.Multiple(() =>
@@ -122,16 +122,16 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 2, 7, 11, 15 }, 9);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output.GetLength(0), Is.EqualTo(2));
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(1));
+            Assert.That(output.Length, Is.EqualTo(1));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(1));
             Assert.That(result.Steps, Is.Not.Empty);
             Assert.That(result.AlgorithmName, Is.EqualTo(_algorithm.Name));
         });
@@ -144,15 +144,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 1, 2, 3, 4, 5 }, 9);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(3));
-            Assert.That(output[0, 1], Is.EqualTo(4));
+            Assert.That(output[0][0], Is.EqualTo(3));
+            Assert.That(output[0][1], Is.EqualTo(4));
         });
     }
 
@@ -163,15 +163,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { -3, -1, 2, 4, 6 }, 3);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(4));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(4));
             Assert.That(result.Steps, Contains.Item("Target sum: 3"));
         });
     }
@@ -183,15 +183,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 0, 4, 3, 0 }, 0);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(3));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(3));
         });
     }
 
@@ -202,15 +202,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 3, 3, 11, 15 }, 6);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(1));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(1));
         });
     }
 
@@ -221,8 +221,8 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 1, 2, 3, 4 }, 10);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[]? output = (int[])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
@@ -240,15 +240,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 5, 7 }, 12);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(0));
-            Assert.That(output[0, 1], Is.EqualTo(1));
+            Assert.That(output[0][0], Is.EqualTo(0));
+            Assert.That(output[0][1], Is.EqualTo(1));
         });
     }
 
@@ -259,15 +259,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 1000, 2000, 3000, 4000 }, 7000);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(2));
-            Assert.That(output[0, 1], Is.EqualTo(3));
+            Assert.That(output[0][0], Is.EqualTo(2));
+            Assert.That(output[0][1], Is.EqualTo(3));
         });
     }
 
@@ -278,15 +278,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { -10, -5, -3, -1 }, -8);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
-            Assert.That(output[0, 0], Is.EqualTo(1));
-            Assert.That(output[0, 1], Is.EqualTo(2));
+            Assert.That(output[0][0], Is.EqualTo(1));
+            Assert.That(output[0][1], Is.EqualTo(2));
         });
     }
 
@@ -294,7 +294,7 @@ public class TwoNumberSumTests
     public void ExecuteAsync_WithInvalidInput_ThrowsArgumentException()
     {
         // Arrange
-        string? input = "invalid input";
+        string input = "invalid input";
         
         // Act & Assert
         Assert.Throws<ArgumentException>(() => _algorithm.ExecuteAsync(input));
@@ -317,7 +317,7 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 1, 2, 3 }, 5);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
         
         // Assert
         Assert.Multiple(() =>
@@ -336,7 +336,7 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 2, 7, 11, 15 }, 9);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
         
         // Assert
         Assert.Multiple(() =>
@@ -354,15 +354,15 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { -1, 0, 1, 2, -1, -4 }, -2);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+        AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
         Assert.Multiple(() =>
         {
             Assert.That(output, Is.Not.Null);
             // Should find -1 at index 0 and -1 at index 4, or 0 and -2 (if -2 exists), etc.
-            Assert.That(output[0, 0], Is.LessThan(output[0, 1]));
+            Assert.That(output[0][0], Is.LessThan(output[0][1]));
         });
     }
 
@@ -373,11 +373,11 @@ public class TwoNumberSumTests
         var input = Tuple.Create(new[] { 3, 2, 4 }, 6);
         
         // Act
-        AppModels.AlgorithmResult? result = _algorithm.ExecuteAsync(input);
-        int[,]? output = (int[,])result.Output!;
+       AlgorithmResult result = _algorithm.ExecuteAsync(input);
+        int[][] output = (int[][])result.Output!;
         
         // Assert
-        Assert.That(output[0, 0], Is.LessThan(output[0, 1]), 
+        Assert.That(output[0][0], Is.LessThan(output[0][1]), 
             "First index should be smaller than second index");
     }
 }

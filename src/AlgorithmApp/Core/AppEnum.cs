@@ -1,8 +1,8 @@
 ﻿namespace AlgorithmApp.Core;
 
-public class AppEnum
+internal static class AppEnum
 {
-    public enum MenuChoice
+    internal enum MenuChoice
     {
         RunAlgorithm,
         ViewDocumentation,
