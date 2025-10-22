@@ -19,7 +19,8 @@ public class ArrayAlgorithmsIntegrationTests
             new ValidAnagramArray(),
             new ValidAnagramDictionary(),
             new TwoNumberSum(),
-            new GroupAnagrams()
+            new GroupAnagrams(),
+            new TopKFrequentElements()
         };
 
         _algorithmFactory = new AlgorithmFactory(_algorithms);
@@ -326,12 +327,15 @@ public class ArrayAlgorithmsIntegrationTests
             List<string>? eatGroup = output.FirstOrDefault(g => g.Contains("eat"));
             Assert.That(eatGroup, Is.Not.Null);
             Assert.That(eatGroup!.Count, Is.EqualTo(3));
+            Assert.That(eatGroup, Does.Contain("tea"));
+            Assert.That(eatGroup, Does.Contain("ate"));
             
             // Verify another group contains "tan", "nat"
             List<string>? tanGroup = output.FirstOrDefault(g => g.Contains("tan"));
             Assert.That(tanGroup, Is.Not.Null);
             Assert.That(tanGroup!.Count, Is.EqualTo(2));
-            
+            Assert.That(tanGroup, Does.Contain("nat"));
+         
             // Verify bat is alone
             List<string>? batGroup = output.FirstOrDefault(g => g.Contains("bat"));
             Assert.That(batGroup, Is.Not.Null);
@@ -531,30 +535,225 @@ public class ArrayAlgorithmsIntegrationTests
 
     #endregion
 
-    #region Cross-Algorithm Integration Tests
+    #region TopKFrequentElements Integration Tests
 
     [Test]
-    public void AlgorithmFactory_CanRetrieveAllArrayAlgorithms()
+    public void TopKFrequentElements_WithBasicExample_ReturnsTopK()
     {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+        var input = Tuple.Create(new[] { 1, 1, 1, 2, 2, 3 }, 2);
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+      // Assert
+        Assert.Multiple(() =>
+        {
+         Assert.That(output, Is.Not.Null);
+        Assert.That(output.Length, Is.EqualTo(2));
+            Assert.That(output, Does.Contain(1)); // 1 appears 3 times
+     Assert.That(output, Does.Contain(2)); // 2 appears 2 times
+            Assert.That(result.Steps, Is.Not.Empty);
+  Assert.That(result.AlgorithmName, Is.EqualTo("Top K Frequent Elements"));
+        });
+    }
+
+    [Test]
+    public void TopKFrequentElements_WithNegativeNumbers_HandlesCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+  var input = Tuple.Create(new[] { -1, -1, -2, -2, -2, 3 }, 2);
+
+        // Act
+   AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+     Assert.That(output, Is.Not.Null);
+          Assert.That(output.Length, Is.EqualTo(2));
+      Assert.That(output, Does.Contain(-2)); // -2 appears 3 times
+            Assert.That(output, Does.Contain(-1)); // -1 appears 2 times
+        });
+    }
+
+    [Test]
+    public void TopKFrequentElements_WithAllUniqueElements_ReturnsKElements()
+    {
+   // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+        var input = Tuple.Create(new[] { 1, 2, 3, 4, 5 }, 3);
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+      // Assert
+        Assert.Multiple(() =>
+        {
+         Assert.That(output, Is.Not.Null);
+            Assert.That(output.Length, Is.EqualTo(3));
+    // All elements have same frequency, so any 3 are valid
+    Assert.That(output.All(x => x >= 1 && x <= 5), Is.True);
+        });
+    }
+
+  [Test]
+    public void TopKFrequentElements_WithKLargerThanUniqueCount_ReturnsAllUnique()
+    {
+        // Arrange
+     IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+        var input = Tuple.Create(new[] { 1, 1, 2, 2, 3, 3 }, 5);
+
+      // Act
+ AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+    Assert.That(output, Is.Not.Null);
+      Assert.That(output.Length, Is.EqualTo(3)); // Only 3 unique elements
+            Assert.That(output, Does.Contain(1));
+      Assert.That(output, Does.Contain(2));
+ Assert.That(output, Does.Contain(3));
+        });
+    }
+
+    [Test]
+    public void TopKFrequentElements_WithLargeDataset_HandlesEfficiently()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+        List<int> largeList = new List<int>();
+        for (int i = 0; i < 100; i++)
+        {
+            largeList.Add(1);
+        }
+        for (int i = 0; i < 50; i++)
+        {
+            largeList.Add(2);
+        }
+        for (int i = 0; i < 25; i++)
+        {
+            largeList.Add(3);
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            largeList.Add(4);
+        }
+        var input = Tuple.Create(largeList.ToArray(), 3);
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+        // Assert
+   Assert.Multiple(() =>
+    {
+            Assert.That(output, Is.Not.Null);
+            Assert.That(output.Length, Is.EqualTo(3));
+  Assert.That(output, Does.Contain(1)); // Most frequent
+  Assert.That(output, Does.Contain(2)); // Second most frequent
+     Assert.That(output, Does.Contain(3)); // Third most frequent
+      });
+    }
+
+    [Test]
+    public void TopKFrequentElements_GenerateSampleInput_ReturnsValidTuple()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+
+        // Act
+        object sample = algorithm.GenerateSampleInput(20);
+
+      // Assert
+     Assert.Multiple(() =>
+      {
+            Assert.That(sample, Is.TypeOf<Tuple<int[], int>>());
+            var tuple = (Tuple<int[], int>)sample;
+            Assert.That(tuple.Item1.Length, Is.EqualTo(20));
+    Assert.That(tuple.Item2, Is.GreaterThan(0));
+            Assert.That(algorithm.ValidateInput(sample), Is.True);
+        });
+    }
+
+    [Test]
+    public void TopKFrequentElements_WithMixedFrequencies_ReturnsCorrectOrder()
+    {
+    // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+   var input = Tuple.Create(new[] { 4, 4, 4, 4, 3, 3, 3, 2, 2, 1 }, 3);
+
+    // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+      // Assert
+        Assert.Multiple(() =>
+  {
+     Assert.That(output, Is.Not.Null);
+            Assert.That(output.Length, Is.EqualTo(3));
+            Assert.That(output, Does.Contain(4)); // 4 appears 4 times
+            Assert.That(output, Does.Contain(3)); // 3 appears 3 times
+            Assert.That(output, Does.Contain(2)); // 2 appears 2 times
+        });
+    }
+
+    [Test]
+    public void TopKFrequentElements_WithZeroValues_HandlesCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
+        var input = Tuple.Create(new[] { 0, 0, 0, 1, 1, 2 }, 2);
+
+        // Act
+ AlgorithmResult result = algorithm.ExecuteAsync(input);
+        int[] output = (int[])result.Output!;
+
+   // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output, Is.Not.Null);
+         Assert.That(output.Length, Is.EqualTo(2));
+      Assert.That(output, Does.Contain(0)); // 0 appears 3 times
+            Assert.That(output, Does.Contain(1)); // 1 appears 2 times
+        });
+    }
+
+    #endregion
+
+    #region Cross-Algorithm Integration Tests
+
+ [Test]
+    public void AlgorithmFactory_CanRetrieveAllArrayAlgorithms()
+  {
         // Act
         IEnumerable<IAlgorithm> arrayAlgorithms = _algorithmFactory.GetAlgorithmsByCategory("Array");
 
         // Assert
         Assert.Multiple(() =>
-        {
-            IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
+    {
+  IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
             Assert.That(algorithms, Is.Not.Empty);
-            Assert.That(algorithms.Count(), Is.EqualTo(5));
+            Assert.That(algorithms.Count(), Is.EqualTo(6));
+     Assert.That(algorithms.Select(a => a.Name),
+   Contains.Item("Contains Duplicate"));
             Assert.That(algorithms.Select(a => a.Name),
-                Contains.Item("Contains Duplicate"));
+          Contains.Item("Valid Anagram (Array)"));
+         Assert.That(algorithms.Select(a => a.Name),
+    Contains.Item("Valid Anagram (Dictionary)"));
             Assert.That(algorithms.Select(a => a.Name),
-                Contains.Item("Valid Anagram (Array)"));
-            Assert.That(algorithms.Select(a => a.Name),
-                Contains.Item("Valid Anagram (Dictionary)"));
-            Assert.That(algorithms.Select(a => a.Name),
-                Contains.Item("Two Number Sum"));
-            Assert.That(algorithms.Select(a => a.Name),
-                Contains.Item("Group Anagrams"));
+              Contains.Item("Two Number Sum"));
+  Assert.That(algorithms.Select(a => a.Name),
+      Contains.Item("Group Anagrams"));
+   Assert.That(algorithms.Select(a => a.Name),
+    Contains.Item("Top K Frequent Elements"));
         });
     }
 

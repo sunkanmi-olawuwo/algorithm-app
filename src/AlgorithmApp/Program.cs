@@ -35,6 +35,7 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, TwoNumberSum>();
                 services.AddSingleton<IAlgorithm, GroupAnagrams>();
                 services.AddSingleton<IAlgorithm, ArrayAlgorithmScratchPad>();
+                services.AddSingleton<IAlgorithm, TopKFrequentElements>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();
