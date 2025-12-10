@@ -37,6 +37,7 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, ArrayAlgorithmScratchPad>();
                 services.AddSingleton<IAlgorithm, TopKFrequentElements>();
                 services.AddSingleton<IAlgorithm, EncodeAndDecodeString>();
+                services.AddSingleton<IAlgorithm, ProductOfArrayExceptSelf>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();
