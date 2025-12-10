@@ -20,7 +20,8 @@ public class ArrayAlgorithmsIntegrationTests
             new ValidAnagramDictionary(),
             new TwoNumberSum(),
             new GroupAnagrams(),
-            new TopKFrequentElements()
+            new TopKFrequentElements(),
+            new EncodeAndDecodeString()
         };
 
         _algorithmFactory = new AlgorithmFactory(_algorithms);
@@ -620,7 +621,7 @@ public class ArrayAlgorithmsIntegrationTests
       Assert.That(output.Length, Is.EqualTo(3)); // Only 3 unique elements
             Assert.That(output, Does.Contain(1));
       Assert.That(output, Does.Contain(2));
- Assert.That(output, Does.Contain(3));
+     Assert.That(output, Does.Contain(3));
         });
     }
 
@@ -629,21 +630,21 @@ public class ArrayAlgorithmsIntegrationTests
     {
         // Arrange
         IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Top K Frequent Elements");
-        List<int> largeList = new List<int>();
+        var largeList = new List<int>();
         for (int i = 0; i < 100; i++)
         {
-            largeList.Add(1);
+   largeList.Add(1);
         }
         for (int i = 0; i < 50; i++)
-        {
+    {
             largeList.Add(2);
         }
         for (int i = 0; i < 25; i++)
         {
             largeList.Add(3);
-        }
+     }
         for (int i = 0; i < 10; i++)
-        {
+  {
             largeList.Add(4);
         }
         var input = Tuple.Create(largeList.ToArray(), 3);
@@ -655,12 +656,12 @@ public class ArrayAlgorithmsIntegrationTests
         // Assert
    Assert.Multiple(() =>
     {
-            Assert.That(output, Is.Not.Null);
-            Assert.That(output.Length, Is.EqualTo(3));
+ Assert.That(output, Is.Not.Null);
+         Assert.That(output.Length, Is.EqualTo(3));
   Assert.That(output, Does.Contain(1)); // Most frequent
   Assert.That(output, Does.Contain(2)); // Second most frequent
      Assert.That(output, Does.Contain(3)); // Third most frequent
-      });
+   });
     }
 
     [Test]
@@ -728,33 +729,366 @@ public class ArrayAlgorithmsIntegrationTests
 
     #endregion
 
+    #region EncodeAndDecodeString Integration Tests
+
+    [Test]
+    public void EncodeAndDecodeString_WithSimpleStrings_EncodesAndDecodesCorrectly()
+ {
+        // Arrange
+    IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+      string[] input = ["hello", "world"];
+
+      // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+        // Assert
+     Assert.Multiple(() =>
+        {
+     Assert.That(output.Encoded, Is.Not.Null);
+      Assert.That(output.Decoded, Is.Not.Null);
+   Assert.That(output.Decoded.Length, Is.EqualTo(2));
+            Assert.That(output.Decoded[0], Is.EqualTo("hello"));
+  Assert.That(output.Decoded[1], Is.EqualTo("world"));
+            Assert.That(result.Steps, Is.Not.Empty);
+            Assert.That(result.AlgorithmName, Is.EqualTo("Encode and Decode String"));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithEmptyStrings_HandlesCorrectly()
+{
+        // Arrange
+    IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = ["", "test", ""];
+
+ // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+     // Assert
+        Assert.Multiple(() =>
+        {
+         Assert.That(output.Decoded.Length, Is.EqualTo(3));
+            Assert.That(output.Decoded[0], Is.EqualTo(""));
+Assert.That(output.Decoded[1], Is.EqualTo("test"));
+            Assert.That(output.Decoded[2], Is.EqualTo(""));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithHashSymbols_HandlesCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+   string[] input = ["hello#world", "test#123", "no#hash#here"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+     dynamic output = result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+     Assert.That(output.Decoded.Length, Is.EqualTo(3));
+            Assert.That(output.Decoded[0], Is.EqualTo("hello#world"));
+Assert.That(output.Decoded[1], Is.EqualTo("test#123"));
+          Assert.That(output.Decoded[2], Is.EqualTo("no#hash#here"));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithSpecialCharacters_HandlesCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+   string[] input = ["hello@world", "test!123", "special$chars%", "symbols&*()"];
+
+        // Act
+    AlgorithmResult result = algorithm.ExecuteAsync(input);
+  dynamic output = result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+   Assert.That(output.Decoded.Length, Is.EqualTo(4));
+     Assert.That(output.Decoded[0], Is.EqualTo("hello@world"));
+      Assert.That(output.Decoded[1], Is.EqualTo("test!123"));
+ Assert.That(output.Decoded[2], Is.EqualTo("special$chars%"));
+            Assert.That(output.Decoded[3], Is.EqualTo("symbols&*()"));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithUnicodeCharacters_HandlesCorrectly()
+    {
+     // Arrange
+ IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = ["hello", "??", "??????", "????"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+dynamic output = result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+    {
+         Assert.That(output.Decoded.Length, Is.EqualTo(4));
+        Assert.That(output.Decoded[0], Is.EqualTo("hello"));
+          Assert.That(output.Decoded[1], Is.EqualTo("??"));
+     Assert.That(output.Decoded[2], Is.EqualTo("??????"));
+ Assert.That(output.Decoded[3], Is.EqualTo("????"));
+      });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithLongStrings_HandlesEfficiently()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string longString = new string('a', 1000);
+    string[] input = [longString, "short", longString];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+        // Assert
+     Assert.Multiple(() =>
+   {
+    Assert.That(output.Decoded.Length, Is.EqualTo(3));
+      Assert.That(output.Decoded[0], Is.EqualTo(longString));
+       Assert.That(output.Decoded[1], Is.EqualTo("short"));
+            Assert.That(output.Decoded[2], Is.EqualTo(longString));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithVaryingLengths_HandlesCorrectly()
+    {
+      // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = ["a", "ab", "abc", "abcd", "abcdefghij", new string('x', 100)];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+Assert.That(output.Decoded.Length, Is.EqualTo(6));
+    Assert.That(output.Decoded[0], Is.EqualTo("a"));
+            Assert.That(output.Decoded[1], Is.EqualTo("ab"));
+            Assert.That(output.Decoded[2], Is.EqualTo("abc"));
+   Assert.That(output.Decoded[3], Is.EqualTo("abcd"));
+     Assert.That(output.Decoded[4], Is.EqualTo("abcdefghij"));
+  Assert.That(output.Decoded[5], Is.EqualTo(new string('x', 100)));
+    });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithSampleInput_WorksCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = ["listen", "silent", "enlist", "inlets", "google", "gogole"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+   // Assert
+        Assert.Multiple(() =>
+        {
+    Assert.That(output.Decoded.Length, Is.EqualTo(6));
+  Assert.That(output.Decoded[0], Is.EqualTo("listen"));
+            Assert.That(output.Decoded[1], Is.EqualTo("silent"));
+            Assert.That(output.Decoded[2], Is.EqualTo("enlist"));
+   Assert.That(output.Decoded[3], Is.EqualTo("inlets"));
+      Assert.That(output.Decoded[4], Is.EqualTo("google"));
+            Assert.That(output.Decoded[5], Is.EqualTo("gogole"));
+      });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithLargeDataset_HandlesEfficiently()
+    {
+  // Arrange
+    IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = Enumerable.Range(1, 100).Select(i => $"string{i}").ToArray();
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(output.Decoded.Length, Is.EqualTo(100));
+        for (int i = 0; i < 100; i++)
+            {
+   Assert.That(output.Decoded[i], Is.EqualTo($"string{i + 1}"));
+  }
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_PreservesOrder()
+    {
+     // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = ["first", "second", "third", "fourth", "fifth"];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+        string[] decoded = output.Decoded;
+
+   // Assert
+        Assert.That(decoded, Is.EqualTo(input));
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithIdenticalStrings_HandlesCorrectly()
+    {
+     // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+     string[] input = ["same", "same", "same", "same"];
+
+      // Act
+  AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+        string[] decoded = output.Decoded;
+
+  // Assert
+    Assert.Multiple(() =>
+ {
+    Assert.That(decoded.Length, Is.EqualTo(4));
+            Assert.That(decoded.All(s => s == "same"), Is.True);
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_WithWhitespace_HandlesCorrectly()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+      string[] input = [" ", "  ", "hello world", " test ", "  multiple  spaces  "];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+
+      // Assert
+        Assert.Multiple(() =>
+     {
+            Assert.That(output.Decoded.Length, Is.EqualTo(5));
+Assert.That(output.Decoded[0], Is.EqualTo(" "));
+            Assert.That(output.Decoded[1], Is.EqualTo("  "));
+            Assert.That(output.Decoded[2], Is.EqualTo("hello world"));
+     Assert.That(output.Decoded[3], Is.EqualTo(" test "));
+            Assert.That(output.Decoded[4], Is.EqualTo("  multiple  spaces  "));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_EncodedFormatIsCorrect()
+    {
+  // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+        string[] input = ["abc", "de"];
+
+    // Act
+     AlgorithmResult result = algorithm.ExecuteAsync(input);
+        dynamic output = result.Output!;
+     string encoded = output.Encoded;
+
+  // Assert
+    Assert.Multiple(() =>
+        {
+            // Format should be: 3#abc2#de
+      Assert.That(encoded, Does.StartWith("3#abc"));
+  Assert.That(encoded, Does.Contain("2#de"));
+          Assert.That(encoded, Is.EqualTo("3#abc2#de"));
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_GenerateSampleInput_ReturnsValidStringArray()
+    {
+        // Arrange
+        IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+
+   // Act
+        object sample = algorithm.GenerateSampleInput(10);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+    Assert.That(sample, Is.TypeOf<string[]>());
+       string[] stringArray = (string[])sample;
+        Assert.That(stringArray.Length, Is.EqualTo(6));
+            Assert.That(algorithm.ValidateInput(sample), Is.True);
+        });
+    }
+
+    [Test]
+    public void EncodeAndDecodeString_RoundTripIntegrity()
+    {
+        // Arrange
+IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Encode and Decode String");
+     string[] testCases = [
+    "simple",
+            "",
+      "#hash#",
+ "123",
+          "special!@#$%^&*()",
+       new string('a', 50),
+            "unicode??",
+       "spaces  here"
+  ];
+
+        // Act
+        AlgorithmResult result = algorithm.ExecuteAsync(testCases);
+        dynamic output = result.Output!;
+        string[] decoded = output.Decoded;
+
+        // Assert
+        Assert.That(decoded, Is.EqualTo(testCases));
+    }
+
+    #endregion
+
     #region Cross-Algorithm Integration Tests
 
- [Test]
+    [Test]
     public void AlgorithmFactory_CanRetrieveAllArrayAlgorithms()
-  {
+    {
         // Act
         IEnumerable<IAlgorithm> arrayAlgorithms = _algorithmFactory.GetAlgorithmsByCategory("Array");
 
         // Assert
         Assert.Multiple(() =>
     {
-  IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
-            Assert.That(algorithms, Is.Not.Empty);
-            Assert.That(algorithms.Count(), Is.EqualTo(6));
-     Assert.That(algorithms.Select(a => a.Name),
-   Contains.Item("Contains Duplicate"));
+IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToArray();
+        Assert.That(algorithms, Is.Not.Empty);
+            Assert.That(algorithms.Count(), Is.EqualTo(7));
+          Assert.That(algorithms.Select(a => a.Name),
+     Contains.Item("Contains Duplicate"));
+ Assert.That(algorithms.Select(a => a.Name),
+    Contains.Item("Valid Anagram (Array)"));
+        Assert.That(algorithms.Select(a => a.Name),
+     Contains.Item("Valid Anagram (Dictionary)"));
             Assert.That(algorithms.Select(a => a.Name),
-          Contains.Item("Valid Anagram (Array)"));
-         Assert.That(algorithms.Select(a => a.Name),
-    Contains.Item("Valid Anagram (Dictionary)"));
+     Contains.Item("Two Number Sum"));
+          Assert.That(algorithms.Select(a => a.Name),
+            Contains.Item("Group Anagrams"));
+    Assert.That(algorithms.Select(a => a.Name),
+            Contains.Item("Top K Frequent Elements"));
             Assert.That(algorithms.Select(a => a.Name),
-              Contains.Item("Two Number Sum"));
-  Assert.That(algorithms.Select(a => a.Name),
-      Contains.Item("Group Anagrams"));
-   Assert.That(algorithms.Select(a => a.Name),
-    Contains.Item("Top K Frequent Elements"));
-        });
+   Contains.Item("Encode and Decode String"));
+      });
     }
 
     [Test]
