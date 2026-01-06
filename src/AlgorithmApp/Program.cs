@@ -38,6 +38,7 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, TopKFrequentElements>();
                 services.AddSingleton<IAlgorithm, EncodeAndDecodeString>();
                 services.AddSingleton<IAlgorithm, ProductOfArrayExceptSelf>();
+                services.AddSingleton<IAlgorithm, ValidSudoku>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();
