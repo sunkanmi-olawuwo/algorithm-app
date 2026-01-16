@@ -39,6 +39,7 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, EncodeAndDecodeString>();
                 services.AddSingleton<IAlgorithm, ProductOfArrayExceptSelf>();
                 services.AddSingleton<IAlgorithm, ValidSudoku>();
+                services.AddSingleton<IAlgorithm, LongestConsecutiveSequence>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();
