@@ -1,4 +1,5 @@
 ﻿using AlgorithmApp.Algorithms.Array;
+using AlgorithmApp.Algorithms.TwoPointers;
 using AlgorithmApp.Core;
 using AlgorithmApp.UI;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,10 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, ProductOfArrayExceptSelf>();
                 services.AddSingleton<IAlgorithm, ValidSudoku>();
                 services.AddSingleton<IAlgorithm, LongestConsecutiveSequence>();
+
+                services.AddSingleton<IAlgorithm, TwoSumSortedArray>();
+                services.AddSingleton<IAlgorithm, ThreeSum>();
+                services.AddSingleton<IAlgorithm, ValidPalindrome>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();
