@@ -48,7 +48,7 @@ public class LongestConsecutiveSequenceTests
     public void ExecuteAsync_WithUnsortedArray_ReturnsCorrectLongestSequenceLength()
     {
         // Arrange
-        int[] input = { 100, 4, 200, 1, 3, 2 };
+        int[] input = [100, 4, 200, 1, 3, 2];
 
         // Act
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
@@ -64,7 +64,7 @@ public class LongestConsecutiveSequenceTests
     public void ExecuteAsync_WithDuplicates_IgnoresDuplicatesAndCountsUniqueConsecutive()
     {
         // Arrange
-        int[] input = { 1, 2, 2, 3 };
+        int[] input = [1, 2, 2, 3];
 
         // Act
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
@@ -78,7 +78,7 @@ public class LongestConsecutiveSequenceTests
     public void ExecuteAsync_WithSingleElement_ReturnsOne()
     {
         // Arrange
-        int[] input = { 7 };
+        int[] input = [7];
 
         // Act
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
@@ -106,7 +106,7 @@ public class LongestConsecutiveSequenceTests
     public void ExecuteAsync_WithNegativeNumbers_HandlesSequencesCorrectly()
     {
         // Arrange
-        int[] input = { -2, -3, -1, 0, 2, 3 }; // longest consecutive: -3,-2,-1,0
+        int[] input = [-2, -3, -1, 0, 2, 3]; // longest consecutive: -3,-2,-1,0
 
         // Act
         AlgorithmResult result = _algorithm.ExecuteAsync(input);

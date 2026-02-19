@@ -20,7 +20,7 @@ internal static class Program
 
     private static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
-            .ConfigureServices((context, services) =>
+            .ConfigureServices((_, services) =>
             {
                 // Core services
                 services.AddSingleton<Application>();
@@ -45,6 +45,7 @@ internal static class Program
                 services.AddSingleton<IAlgorithm, TwoSumSortedArray>();
                 services.AddSingleton<IAlgorithm, ThreeSum>();
                 services.AddSingleton<IAlgorithm, ValidPalindrome>();
+                services.AddSingleton<IAlgorithm, ContainerWithMostWater>();
 
                 // Algorithm factory
                 services.AddSingleton<IAlgorithmFactory, AlgorithmFactory>();

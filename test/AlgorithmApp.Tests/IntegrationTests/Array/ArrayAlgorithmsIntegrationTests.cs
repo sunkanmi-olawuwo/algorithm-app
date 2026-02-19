@@ -34,7 +34,7 @@ public class ArrayAlgorithmsIntegrationTests
     {
         // Arrange
         IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
-        int[] input = { 1, 5, 9, 2, 5, 8 };
+        int[] input = [1, 5, 9, 2, 5, 8];
 
         // Act
         AlgorithmResult result = algorithm.ExecuteAsync(input);
@@ -57,7 +57,7 @@ public class ArrayAlgorithmsIntegrationTests
     {
         // Arrange
         IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
-        int[] input = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        int[] input = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         // Act
         AlgorithmResult result = algorithm.ExecuteAsync(input);
@@ -98,7 +98,7 @@ public class ArrayAlgorithmsIntegrationTests
     {
         // Arrange
         IAlgorithm algorithm = _algorithmFactory.GetAlgorithm("Contains Duplicate");
-        int[] input = { 7, 7, 7, 7, 7 };
+        int[] input = [7, 7, 7, 7, 7];
 
         // Act
         AlgorithmResult result = algorithm.ExecuteAsync(input);
@@ -1167,7 +1167,7 @@ IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToA
     {
         // Arrange
         IAlgorithm containsDuplicate = _algorithmFactory.GetAlgorithm("Contains Duplicate");
-        int[] testArray = { 5, 2, 8, 2, 9, 1 };
+        int[] testArray = [5, 2, 8, 2, 9, 1];
 
         // Act
         AlgorithmResult duplicateResult = containsDuplicate.ExecuteAsync(testArray);
@@ -1191,13 +1191,13 @@ IAlgorithm[] algorithms = arrayAlgorithms as IAlgorithm[] ?? arrayAlgorithms.ToA
         // Arrange
         IAlgorithm arrayImpl = _algorithmFactory.GetAlgorithm("Valid Anagram (Array)");
         IAlgorithm dictImpl = _algorithmFactory.GetAlgorithm("Valid Anagram (Dictionary)");
-        Tuple<string, string>[] testCases = new[]
-        {
+        Tuple<string, string>[] testCases =
+        [
             Tuple.Create("listen", "silent"),
             Tuple.Create("hello", "world"),
             Tuple.Create("anagram", "nagaram"),
             Tuple.Create("rat", "car")
-        };
+        ];
 
         // Act & Assert
         foreach (Tuple<string, string>? testCase in testCases)

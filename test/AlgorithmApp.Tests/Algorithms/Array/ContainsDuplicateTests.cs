@@ -26,7 +26,7 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithValidArray_ReturnsTrue()
     {
         // Arrange
-        int[] input = new[] { 1, 2, 3, 4, 5 };
+        int[] input = [1, 2, 3, 4, 5];
         
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -39,7 +39,7 @@ public class ContainsDuplicateTests
     public void ValidateInput_WithEmptyArray_ReturnsFalse()
     {
         // Arrange
-        int[] input = new int[0];
+        int[] input = [];
         
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -79,7 +79,7 @@ public class ContainsDuplicateTests
     public void ExecuteAsync_WithDuplicates_ReturnsTrue()
     {
         // Arrange
-        int[] input = new[] { 1, 2, 3, 4, 5, 3 };
+        int[] input = [1, 2, 3, 4, 5, 3];
         
         // Act
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
@@ -92,7 +92,7 @@ public class ContainsDuplicateTests
     public void ExecuteAsync_WithoutDuplicates_ReturnsFalse()
     {
         // Arrange
-        int[] input = new[] { 1, 2, 3, 4, 5 };
+        int[] input = [1, 2, 3, 4, 5];
         
         // Act
         AlgorithmResult result = _algorithm.ExecuteAsync(input);

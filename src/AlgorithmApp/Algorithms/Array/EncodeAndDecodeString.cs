@@ -13,7 +13,7 @@ internal class EncodeAndDecodeString : ArrayAlgorithmBase
 
     public override object GenerateSampleInput(int size)
     {
-        string[] sampleInput = { "listen", "silent", "enlist", "inlets", "google", "gogole" };
+        string[] sampleInput = ["listen", "silent", "enlist", "inlets", "google", "gogole"];
         return sampleInput;
     }
 

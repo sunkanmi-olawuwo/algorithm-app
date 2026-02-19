@@ -36,7 +36,7 @@ public class TwoSumSortedArrayTests
     public void ValidateInput_WithValidArray_ReturnsTrue()
     {
         // Arrange
-        int[] input = { 1, 2 };
+        int[] input = [1, 2];
 
         // Act
         bool result = _algorithm.ValidateInput(input);
@@ -49,7 +49,7 @@ public class TwoSumSortedArrayTests
     public void ValidateInput_WithSingleElementArray_ReturnsFalse()
     {
         // Arrange
-        int[] input = { 1 };
+        int[] input = [1];
 
         // Act
         bool result = _algorithm.ValidateInput(input);

@@ -23,7 +23,7 @@ public class ProductOfArrayExceptSelfTests
     [Test]
     public void ValidateInput_WithValidArray_ReturnsTrue()
     {
-        int[] input = new[] { 1, 2, 3, 4 };
+        int[] input = [1, 2, 3, 4];
         bool result = _algorithm.ValidateInput(input);
         Assert.That(result, Is.True);
     }
@@ -59,7 +59,7 @@ public class ProductOfArrayExceptSelfTests
     [Test]
     public void ExecuteAsync_BasicExample_ReturnsExpectedProductArray()
     {
-        int[] input = new[] { 1, 2, 3, 4 };
+        int[] input = [1, 2, 3, 4];
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
         int[] productArray = GetProductArray(result);
         Assert.That(productArray, Is.EqualTo(new[] { 24, 12, 8, 6 }));
@@ -68,7 +68,7 @@ public class ProductOfArrayExceptSelfTests
     [Test]
     public void ExecuteAsync_WithZero_ReturnsExpectedProductArray()
     {
-        int[] input = new[] { 1, 0, 3, 4 };
+        int[] input = [1, 0, 3, 4];
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
         int[] productArray = GetProductArray(result);
         // Total product excluding the zero index is 1*3*4 = 12, others become 0 when a zero exists
@@ -78,7 +78,7 @@ public class ProductOfArrayExceptSelfTests
     [Test]
     public void ExecuteAsync_WithTwoZeros_AllZeros()
     {
-        int[] input = new[] { 0, 1, 0, 2 };
+        int[] input = [0, 1, 0, 2];
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
         int[] productArray = GetProductArray(result);
         Assert.That(productArray, Is.EqualTo(new[] { 0, 0, 0, 0 }));
@@ -87,7 +87,7 @@ public class ProductOfArrayExceptSelfTests
     [Test]
     public void ExecuteAsync_WithNegativeNumbers_HandlesCorrectly()
     {
-        int[] input = new[] { -1, 2, -3, 4 };
+        int[] input = [-1, 2, -3, 4];
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
         int[] productArray = GetProductArray(result);
         // Products except self: [2*-3*4, -1*-3*4, -1*2*4, -1*2*-3] => [-24, 12, -8, 6]
@@ -97,7 +97,7 @@ public class ProductOfArrayExceptSelfTests
     [Test]
     public void ExecuteAsync_WithSingleElementArray_ReturnsOne()
     {
-        int[] input = new[] { 5 };
+        int[] input = [5];
         AlgorithmResult result = _algorithm.ExecuteAsync(input);
         int[] productArray = GetProductArray(result);
         // By convention, product except self for single element can be 1

@@ -22,7 +22,7 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithValidAlgorithms_ReturnsComparisonResult()
     {
         // Arrange
-        string[] algorithms = new[] { "Algorithm1", "Algorithm2" };
+        string[] algorithms = ["Algorithm1", "Algorithm2"];
         Mock<IAlgorithm> mockAlg1 = SetupMockAlgorithm("Algorithm1");
         Mock<IAlgorithm> mockAlg2 = SetupMockAlgorithm("Algorithm2");
         
@@ -59,7 +59,7 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithMissingAlgorithm_SkipsIt()
     {
         // Arrange
-        string[] algorithms = new[] { "Algorithm1", "NonExistentAlgorithm" };
+        string[] algorithms = ["Algorithm1", "NonExistentAlgorithm"];
         Mock<IAlgorithm> mockAlg1 = SetupMockAlgorithm("Algorithm1");
         
         _mockFactory.Setup(f => f.GetAlgorithm("Algorithm1")).Returns(mockAlg1.Object);
@@ -86,7 +86,7 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithInvalidInput_SkipsAlgorithm()
     {
         // Arrange
-        string[] algorithms = new[] { "Algorithm1", "InvalidAlgorithm" };
+        string[] algorithms = ["Algorithm1", "InvalidAlgorithm"];
         
         Mock<IAlgorithm> mockAlg1 = SetupMockAlgorithm("Algorithm1");
         var mockInvalid = new Mock<IAlgorithm>();
@@ -117,7 +117,7 @@ public class AlgorithmComparerTests
     public void CompareAlgorithms_WithNoValidAlgorithms_ReturnsEmptyResult()
     {
         // Arrange
-        string[] algorithms = new[] { "NonExistent1", "NonExistent2" };
+        string[] algorithms = ["NonExistent1", "NonExistent2"];
         
         _mockFactory.Setup(f => f.GetAlgorithm(It.IsAny<string>())).Returns((IAlgorithm)null!);
         

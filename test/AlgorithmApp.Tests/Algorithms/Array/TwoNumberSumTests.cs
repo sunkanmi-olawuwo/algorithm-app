@@ -87,7 +87,7 @@ public class TwoNumberSumTests
     public void ValidateInput_WithNonTupleInput_ReturnsFalse()
     {
         // Arrange
-        int[] input = new[] { 1, 2, 3 };
+        int[] input = [1, 2, 3];
         
         // Act
         bool result = _algorithm.ValidateInput(input);
